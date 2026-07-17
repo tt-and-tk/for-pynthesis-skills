@@ -9,12 +9,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 自作PCプロジェクトは，PYNQ-Z2上に実装する自作CPUを含むハードウェア一式と，それを動かすソフトウェア群(コンパイラ・アセンブラ)から成り，複数の独立したGitHubリポジトリで構成される．
 
 ```
-入力(.pn) → [コンパイラ pynesis] → アセンブリ(.pt) → [アセンブラ pyntaxis] → SystemVerilog ROM(.sv) → [Vivado] → PYNQ-Z2上のハードウェア(qurge)
+入力(.pn) → [コンパイラ pynesis] → アセンブリ(.pt) → [アセンブラ pyntaxis] → SystemVerilog ROM(.sv) → [Vivado] → PYNQ-Z2上のハードウェア(qurgeから合成)
 ```
 
 | リポジトリ(GitHub) | 役割 |
 |:-|:-|
-| `specification` | CPUアーキテクチャ・ISA・アセンブリ言語・コンパイラ仕様のドキュメント(非プロジェクト) |
+| `specification` | CPUアーキテクチャ・ISA・アセンブリ言語・コンパイラ仕様のドキュメント(Claude Codeプロジェクトを持たない) |
 | `pyntaxis` | アセンブリ言語(`.pt`) → SystemVerilog ROM(`.sv`)へのアセンブラ |
 | `pynesis` | 独自C系言語(`.pn`) → アセンブリ言語へのコンパイラ |
 | `qurge` | CPU・メモリ等を含むハードウェア一式のVivadoプロジェクト(ハードウェア実装) |
