@@ -15,10 +15,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | リポジトリ(GitHub) | 役割 |
 |:-|:-|
 | `specification` | CPUアーキテクチャ・ISA・アセンブリ言語・コンパイラ仕様のドキュメント(Claude Codeプロジェクトを持たない) |
-| `pyntaxis` | アセンブリ言語(`.pt`) → SystemVerilog ROM(`.sv`)へのアセンブラ |
 | `pynesis` | 独自C系言語(`.pn`) → アセンブリ言語へのコンパイラ |
+| `pyntaxis` | アセンブリ言語(`.pt`) → SystemVerilog ROM(`.sv`)へのアセンブラ |
 | `qurge` | CPU・メモリ等を含むハードウェア一式のVivadoプロジェクト(ハードウェア実装) |
-| `for-pynthesis-skills`(本リポジトリ) | 上記各リポジトリで共有するissue起票・対応支援スキル(`issue-create`/`issue-resolve`)を提供する．自身はCPU・コンパイラ・アセンブラのソースを持たない |
+| `for-pynthesis-skills`(本リポジトリ) | 上記各リポジトリで共有するissue起票・対応支援スキル(`issue-create`/`issue-resolve`)を提供する．自身はハードウェア・コンパイラ・アセンブラのソースを持たない |
 
 ## 含まれるスキル
 
