@@ -36,6 +36,8 @@ claude -p [--add-dir <別リポジトリのパス>...] -- "issue #<番号>(<owne
 
 影響リポジトリごとに以下を行う．**複数リポジトリに影響する場合，1つのセッションで複数リポジトリを串刺しに編集しない．**このリポジトリでの対応が完了したら，他の影響リポジトリについては，対象リポジトリと該当issue番号を明示した上で，そのリポジトリのプロジェクトで本スキルを実行するようユーザーに依頼する(このセッションから直接他リポジトリを操作しない)．issue自体は1つのままでよく，実装の実行単位だけをリポジトリごとに分ける．
 
+**例外(`specification`):** `specification`リポジトリはClaude Codeプロジェクトを持たない(非プロジェクトという既存設計のため)ため，串刺し禁止ルールの対象外とする．影響リポジトリに`specification`が含まれる場合，`specification`に対しては現在のセッションから直接ブランチ作成・ファイル操作・PR作成を行ってよい(別セッションへの依頼は不要)．`specification`以外の複数リポジトリにまたがる場合は，それらの間では引き続き串刺し禁止ルールが適用される．
+
 ### 4.1 作業場所の準備
 
 `EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**この場合は直後の`git checkout -b`によるブランチ作成コードブロックを実行しない**．
@@ -47,6 +49,14 @@ git checkout <デフォルトブランチ>
 git pull
 git checkout -b fix/issue-<番号>-<内容を表す短い語句>
 ```
+
+**`specification`の場合は`EnterWorktree`も使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，素の`git worktree add`で疑似的に同等の隔離を作る．チェックアウト先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，現在のプロジェクト自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．
+
+```
+git -C <specificationの絶対パス> worktree add "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" -b fix/issue-<番号>-<内容を表す短い語句>
+```
+
+現在のプロジェクトの`.gitignore`に`.worktrees/`が無ければ追記し，誤って現在のプロジェクト自身にコミットされないようにする．以降のファイル操作・コミットは，このディレクトリ内で行う．
 
 ### 4.2 修正
 
@@ -62,6 +72,8 @@ gh pr create --repo <owner>/<repo> --title "<タイトル>" --body "<本文>" [-
 ```
 
 PR作成時の`--body`に，closeキーワード (`Closes owner/repo#番号`) またはリンクのみ (`Related to owner/repo#番号`) を含める．closeキーワードは1issueにつき1箇所のPRのみに付与する (issueが存在するリポジトリのPR，またはユーザーが指定したPR)．それ以外のリポジトリのPRは`Related to owner/repo#番号`のみを記載する．  
+
+**`specification`の疑似worktree(4.1)で作業している場合**，セッションのBash呼び出しをまたいで`cd`は保持されないため，`git add`・`git commit`・`git push`は`git -C <疑似worktreeの絶対パス> ...`の形式で実行する．
 
 **`--draft`は，closeキーワードを持つPRにのみ付ける．** マージするとissueが閉じるPRであることを一目で分かるようにするための運用．closeキーワードを持たない(`Related to`のみの)PRはissueを閉じないため，通常のPR(Ready)として作成する．  
 
@@ -134,6 +146,8 @@ git branch -d fix/issue-<番号>-<内容を表す短い語句>
 ```
 
 **それ以外の場合**(4.1で`EnterWorktree`を使った場合)，上記の代わりに`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．
+
+**`specification`の疑似worktree(4.1)を使った場合**，`git -C <specificationの絶対パス> worktree remove <疑似worktreeの絶対パス>`で作業ディレクトリを削除する．
 
 # レビュー指摘への向き合い方
 
