@@ -1,0 +1,146 @@
+# 概要
+
+`specification`/`pynesis`/`pyntaxis`/`qurge`/`for-pynthesis-skills`自身など，複数プロジェクトに横断的に影響する修正(`CLAUDE.md`一括更新，`settings.json`見直し等)を，1issue・1セッションでまとめて行う．
+
+**このスキルは`for-pynthesis-skills`リポジトリの`.claude`ディレクトリ内にのみ配置し，プラグインとして他プロジェクトには配布しない．** `for-pynthesis-skills`以外のプロジェクトで横断編集を行いたい場合も，`for-pynthesis-skills`のプロジェクトディレクトリでこのスキルを実行する．
+
+通常のissue対応(`issue-resolve`)における串刺し禁止ルール(1セッションで複数リポジトリを横断編集しない)は，このスキルには適用しない．このスキルの対象外の修正(特定リポジトリ1つだけに閉じたissue対応)は`issue-resolve`を使う．
+
+# 手順
+
+## 1. issue内容の確認
+
+```
+gh issue view <番号> --repo tt-and-tk/for-pynthesis-skills
+```
+
+## 2. 調査
+
+原因調査を行い，影響リポジトリ(`specification`/`pynesis`/`pyntaxis`/`qurge`/`for-pynthesis-skills`のうちどれか複数)と対象ファイルを特定する．
+
+## 3. 修正方針の承認
+
+調査結果と修正方針をユーザーに提示し，承認を得る．**これが実装前の最後の確認ポイント**であり，承認後は手順4を人間の追加確認なしに連続して実行する．
+
+## 4. リポジトリごとの実装〜PR作成
+
+影響リポジトリ全てについて，このセッション内で連続して以下を行う(串刺し編集可)．
+
+### 4.1 作業場所の準備
+
+**対象が`for-pynthesis-skills`自身の場合**，`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成する．`EnterWorktree`はブランチ作成まで一体で行うため，この場合は直後の`git checkout -b`は実行しない．
+
+**それ以外のリポジトリ(`specification`/`pynesis`/`pyntaxis`/`qurge`)の場合**，`EnterWorktree`は使えない(現在のリポジトリと兄弟関係にあるため)．代わりにリモートから直接cloneして疑似的な隔離を作る．clone先は，サンドボックスの書き込み制限により対象リポジトリと兄弟の場所には作れないため，`for-pynthesis-skills`自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．`<現在のプロジェクトルート>`は，このセッションが起動した元のプロジェクトディレクトリを指し，`EnterWorktree`のworktree(`.claude/worktrees/<name>/`配下)には作らない．
+
+```
+gh repo clone tt-and-tk/<リポジトリ名> "<現在のプロジェクトルート>/.worktrees/<リポジトリ名>-fix-issue-<番号>-<内容を表す短い語句>"
+git -C "<現在のプロジェクトルート>/.worktrees/<リポジトリ名>-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
+```
+
+`qurge`はVivadoプロジェクトを含むが，この手順は既存のローカルクローンやXPRファイルの絶対パスに依存しないリモートからの新規cloneであるため，他のリポジトリと同じ手順でよい．
+
+### 4.2 修正
+
+手順3で承認された方針に基づいて修正を行う．
+
+### 4.3 コミット・push・PR作成
+
+**`for-pynthesis-skills`自身の場合**
+
+```
+git add <変更したファイル>
+git commit -m "<コミットメッセージ>"
+git push -u origin fix/issue-<番号>-<内容を表す短い語句>
+gh pr create --repo tt-and-tk/for-pynthesis-skills --title "<タイトル>" --body "<本文>" [--draft]
+```
+
+**それ以外のリポジトリの場合**，4.1でcloneしたディレクトリはセッションのカレントディレクトリに紐付かないため，`git add`・`git commit`・`git push`は`git -C <cloneしたディレクトリの絶対パス> ...`の形式で実行し，`gh pr create`には`--head fix/issue-<番号>-<内容を表す短い語句>`を明示してpush先ブランチを指定する．
+
+```
+git -C <cloneしたディレクトリの絶対パス> add <変更したファイル>
+git -C <cloneしたディレクトリの絶対パス> commit -m "<コミットメッセージ>"
+git -C <cloneしたディレクトリの絶対パス> push -u origin fix/issue-<番号>-<内容を表す短い語句>
+gh pr create --repo tt-and-tk/<リポジトリ名> --head fix/issue-<番号>-<内容を表す短い語句> --title "<タイトル>" --body "<本文>" [--draft]
+```
+
+**共通**: PR作成時の`--body`に，closeキーワード(`Closes tt-and-tk/for-pynthesis-skills#番号`)またはリンクのみ(`Related to tt-and-tk/for-pynthesis-skills#番号`)を含める．closeキーワードは1issueにつき1箇所のPRのみに付与する(通常はissueが存在する`for-pynthesis-skills`のPR)．それ以外のリポジトリのPRは`Related to`のみを記載する．`--draft`は，closeキーワードを持つPRにのみ付ける．
+
+### 4.4 自動レビューループ
+
+`claude -p`によるレビューを行い，修正すべきと判断した指摘がなくなるまで，人間の確認なしに修正・再レビューを繰り返す．変更内容のうち説明が必要な箇所は，PRへのコメントまたはコミットメッセージで補足する．
+
+レビューはgit diffの確認だけでなく，変更対象ファイルのソース全体も改めて確認し，既存不具合・新規不具合の有無をチェックする対応とする．`claude -p`には対象issue番号・リポジトリを渡し，必要なら`claude -p`自身が`gh issue view`でissue詳細を取得できるようにする．
+
+**`--allowedTools`だけでは不十分**．`for-pynthesis-skills`の`.claude/settings.json`が許可しているツール(`Edit`・`Write`・`git commit`・`git push`・`gh pr create`等)は，`--allowedTools`に含めなくても素通りしてしまう(settings.jsonの許可は`--allowedTools`と加算的に効くため)．レビュー用の`claude -p`には，settings.jsonが許可している項目のうち意図的に残す3つ(`Bash(git status:*)`・`Bash(git diff:*)`・`Bash(gh issue view:*)`)を除く全てを`--disallowedTools`で明示的に禁止すること．`claude -p`自身の再帰呼び出しも禁止対象に含める．
+
+- 今回の変更で新たに持ち込んだ不具合は，このissue対応の中で修正する
+- 今回の変更とは無関係に以前から存在する不具合を見つけた場合は，このissue対応では修正せず，`claude -p`自身に`issue-create`スキルを起動して別issueを起票してもらう．`claude -p`が起動できるスキルは`issue-create`のみに限定し，このスキル自身を含む他のスキルは呼び出せないようにする．`issue-create`は起動元プロンプトに非対話的な自動レビューループからの起動である旨が明示されていないと承認待ちの挙動になるため，`claude -p`に渡すプロンプト文言には「クロスプロジェクト編集スキルの自動レビューループから非対話的に起動している(人間は介在しない)．不具合を見つけた場合は承認を待たずそのまま`issue-create`スキルで起票してよい．深い検証は不要で，「〜の可能性がある」程度の疑いでも起票してよい」という趣旨を必ず含める
+
+一回のレビュー内容のうち，指摘事項一つずつについてコミットを行う．プッシュについてはまとめて行ってよい．
+レビュー指摘への対応方針は，末尾の「レビュー指摘への向き合い方」を参照(AIレビュー・人間レビューの両方に共通する原則)．
+
+```
+claude -p --allowedTools "Read,Grep,Glob,Skill(issue-create),Bash(git status:*),Bash(git diff:*),Bash(gh issue view:*)" --disallowedTools "Edit,Write,EnterWorktree,ExitWorktree,Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(git checkout:*),Bash(git pull),Bash(git branch -d:*),Bash(git branch --show-current),Bash(git branch),Bash(git log:*),Bash(git show:*),Bash(git remote -v),Bash(gh pr create:*),Bash(gh api repos/*/pulls/*/comments),Bash(gh api repos/*/pulls/*/comments:*),Bash(gh api repos/*/pulls/*/comments/*/replies:*),Bash(gh api repos/*/issues/*/comments),Bash(gh api repos/*/issues/*/comments:*),Bash(gh issue create:*),Bash(claude -p:*)" -- "issue #<番号>(tt-and-tk/for-pynthesis-skills)の対応について，<リポジトリ名>でのgit diffとソース全体のレビューを依頼する文言" > review.md
+```
+```
+git add <変更したファイル>
+git commit -m "<コミットメッセージ>"
+git push
+```
+
+### 4.5 人間レビューへの対応
+
+Draftの解除はユーザーが手動で行う(AIは行わない)．
+
+ユーザーがPRにレビューコメントを追加した場合は取得して確認し，指摘があれば修正してコミット・pushする．対応方針は「レビュー指摘への向き合い方」(末尾)を参照．
+
+```
+gh api repos/tt-and-tk/<リポジトリ名>/pulls/<PR番号>/comments
+gh api repos/tt-and-tk/<リポジトリ名>/issues/<PR番号>/comments
+```
+```
+git add <変更したファイル>
+git commit -m "<コミットメッセージ>"
+git push
+```
+
+人間レビューへの対応が終わったら，**4.4の自動レビューループを再度実行する**．人間からの指摘で行った修正が新たな不具合を持ち込んでいないか，`claude -p`によるレビューで確認する．
+
+### 4.6 次のリポジトリへ
+
+影響リポジトリが複数ある場合，4.1〜4.5をリポジトリごとに繰り返す(このセッション内で連続実行してよい)．
+
+## 5. マージ
+
+マージはユーザー自身が行う(共有状態を変更する操作のため，スキルは代行しない)．
+
+## 6. マージ後の後始末
+
+マージ完了の報告を受けたら，issueがクローズされたことを確認する．
+
+```
+gh issue view <番号> --repo tt-and-tk/for-pynthesis-skills
+```
+
+**`for-pynthesis-skills`自身の場合**，`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．
+
+**それ以外のリポジトリ(4.1でclone)の場合**，cloneしたディレクトリを削除するだけでよい(ローカルブランチもディレクトリごと削除される．対象リポジトリ本体のローカルクローンには一切触れないため，そちらのブランチ削除は不要)．
+
+```
+rm -rf <cloneしたディレクトリの絶対パス>
+```
+
+# レビュー指摘への向き合い方
+
+AIレビュー(`claude -p`)・人間レビューのいずれであっても，指摘を鵜呑みにしてそのまま従うのではなく，**本当に対応すべきか，このまま変更しない方が正しいのではないかを都度考えてから，対応する・しないを判断する．**
+
+- 対応する必要がないと判断した指摘は，対応しなくてよい
+- 指摘に対して反論する，あるいは意図的に対応しない場合も認められる
+- ただし，指摘を無視した場合・反論した場合は，その理由を必ずPRコメントまたはコミットメッセージまたはその両方に残す(黙って無視しない)
+
+# 注意
+
+- 人間の確認が必須なのは，手順3(修正方針の承認)と，破壊的操作(force push，reset --hard等)のみ．それ以外(ブランチ作成・実装・コミット・push・PR作成・レビューループ・レビューコメント対応)は連続して自動実行する
+- 1issueに対して複数のPRがある場合，closeキーワードを持つPRは1つだけにする
+- 影響リポジトリが不明な場合は，ユーザーに確認する
+- マージは決して行わない
