@@ -64,7 +64,7 @@ git -C "<現在のプロジェクトルート>/.worktrees/specification-fix-issu
 - 現在のプロジェクトにも影響する場合: 4.3の手順とは別に，そのリポジトリの通常のブランチで`git add`・`git commit`・`git push`してPRに含める
 - 現在のプロジェクト自身には変更がない場合(影響リポジトリが`specification`のみ，または`specification`と現在のプロジェクト以外の別リポジトリの場合): このissueとは無関係な小さな保守的変更として，別途ブランチを切り(`fix/issue-<番号>`のブランチ名は使わない)，`.gitignore`変更のみのPRを作成する(closeキーワード・`Related to`のいずれも付けない)
 
-以降，`specification`向けのファイル操作・コミットは，cloneしたディレクトリ内で行う．
+以降，`specification`向けのファイル操作・コミットは，cloneしたディレクトリ内で行う．なお，この`.gitignore`変更がマージされ`git pull`で元のディレクトリに反映されるまでの間は，元のディレクトリの`git status`で`.worktrees/`が未追跡ディレクトリとして表示されることがあるが，4.3で対象ファイルを明示して`git add`するため実害はない．
 
 ### 4.2 修正
 
