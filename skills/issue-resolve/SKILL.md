@@ -73,9 +73,9 @@ gh pr create --repo <owner>/<repo> --title "<タイトル>" --body "<本文>" [-
 
 PR作成時の`--body`に，closeキーワード (`Closes owner/repo#番号`) またはリンクのみ (`Related to owner/repo#番号`) を含める．closeキーワードは1issueにつき1箇所のPRのみに付与する (issueが存在するリポジトリのPR，またはユーザーが指定したPR)．それ以外のリポジトリのPRは`Related to owner/repo#番号`のみを記載する．  
 
-**`specification`の疑似worktree(4.1)で作業している場合**，セッションのBash呼び出しをまたいで`cd`は保持されないため，`git add`・`git commit`・`git push`は`git -C <疑似worktreeの絶対パス> ...`の形式で実行する．
-
 **`--draft`は，closeキーワードを持つPRにのみ付ける．** マージするとissueが閉じるPRであることを一目で分かるようにするための運用．closeキーワードを持たない(`Related to`のみの)PRはissueを閉じないため，通常のPR(Ready)として作成する．  
+
+**`specification`の疑似worktree(4.1)で作業している場合**は以下の点が異なる．疑似worktreeは`EnterWorktree`によるセッションの作業ディレクトリ切り替えを伴わない(素の`git worktree add`で作っただけの)ため，セッションのカレントディレクトリは現在のプロジェクトのルートのままであり，`cd`しても次のBash呼び出しでは保持されない．そのため`git add`・`git commit`・`git push`は`git -C <疑似worktreeの絶対パス> ...`の形式で実行し，`gh pr create`には`--head fix/issue-<番号>-<内容を表す短い語句>`を明示してpush先ブランチを指定する．
 
 ### 4.4 自動レビューループ
 
