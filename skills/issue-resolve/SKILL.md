@@ -52,8 +52,11 @@ git checkout -b fix/issue-<番号>-<内容を表す短い語句>
 
 **`specification`の場合は`EnterWorktree`も使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，素の`git worktree add`で疑似的に同等の隔離を作る．チェックアウト先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，現在のプロジェクト自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．
 
+起点は`specification`の作業ツリーが現在チェックアウトしているコミットではなく，`fetch`した最新の`origin/<デフォルトブランチ>`を明示する(作業ツリーの状態に依存させないため)．
+
 ```
-git -C <specificationの絶対パス> worktree add "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" -b fix/issue-<番号>-<内容を表す短い語句>
+git -C <specificationの絶対パス> fetch origin
+git -C <specificationの絶対パス> worktree add "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" -b fix/issue-<番号>-<内容を表す短い語句> origin/<デフォルトブランチ>
 ```
 
 現在のプロジェクトの`.gitignore`に`.worktrees/`が無ければ追記し，誤って現在のプロジェクト自身にコミットされないようにする．この`.gitignore`変更は`specification`ではなく現在のプロジェクト自身への変更なので，4.3の手順とは別に，現在のプロジェクトの通常のブランチで`git add`・`git commit`・`git push`してこのリポジトリのPRに含める．以降，`specification`向けのファイル操作・コミットは，疑似worktreeディレクトリ内で行う．
