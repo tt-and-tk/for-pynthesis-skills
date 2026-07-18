@@ -56,7 +56,7 @@ git checkout -b fix/issue-<番号>-<内容を表す短い語句>
 git -C <specificationの絶対パス> worktree add "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" -b fix/issue-<番号>-<内容を表す短い語句>
 ```
 
-現在のプロジェクトの`.gitignore`に`.worktrees/`が無ければ追記し，誤って現在のプロジェクト自身にコミットされないようにする．以降のファイル操作・コミットは，このディレクトリ内で行う．
+現在のプロジェクトの`.gitignore`に`.worktrees/`が無ければ追記し，誤って現在のプロジェクト自身にコミットされないようにする．この`.gitignore`変更は`specification`ではなく現在のプロジェクト自身への変更なので，4.3の手順とは別に，現在のプロジェクトの通常のブランチで`git add`・`git commit`・`git push`してこのリポジトリのPRに含める．以降，`specification`向けのファイル操作・コミットは，疑似worktreeディレクトリ内で行う．
 
 ### 4.2 修正
 
