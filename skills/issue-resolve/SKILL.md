@@ -61,8 +61,8 @@ git -C "<現在のプロジェクトルート>/.worktrees/specification-fix-issu
 
 現在のプロジェクトの`.gitignore`に`.worktrees/`が無ければ追記し，clone先ディレクトリが誤って現在のプロジェクト自身にコミットされないようにする．この`.gitignore`変更をどこでコミットするかは，今回のissueが現在のプロジェクト自身にも影響するかどうかで変わる．
 
-- 現在のプロジェクトにも影響する場合: 4.3で今回のissue対応としてコミットするファイルに`.gitignore`も含める
-- 現在のプロジェクト自身には変更がない場合(影響リポジトリが`specification`のみ，または`specification`と現在のプロジェクト以外の別リポジトリの場合): このissueとは無関係な変更なので，`fix/issue-<番号>`とは別の専用ブランチを切り，`.gitignore`変更のみのPRを作成する(closeキーワード・`Related to`のいずれも付けない)
+- 現在のプロジェクトにも影響する場合: 現在のプロジェクトの4.3で今回のissue対応としてコミットするファイルに`.gitignore`も含める
+- 現在のプロジェクト自身には変更がない場合(影響リポジトリが`specification`のみ，または`specification`と現在のプロジェクト以外の別リポジトリの場合): このissueとは無関係な変更なので，`chore/worktrees-gitignore`のような専用ブランチを切り，`.gitignore`変更のみのPRを作成する(closeキーワード・`Related to`のいずれも付けない)
 
 以降，`specification`向けのファイル操作・コミットは，cloneしたディレクトリ内で行う．なお，この`.gitignore`変更が現在のプロジェクトのデフォルトブランチにマージされるまでの間，元のディレクトリの`git status`では`.worktrees/`が未追跡ディレクトリとして表示されるが，4.3では`.gitignore`を含め変更したファイルを個別に指定して`git add`するため，誤ってコミットされることはない．
 
