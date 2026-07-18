@@ -36,6 +36,8 @@ claude -p [--add-dir <別リポジトリのパス>...] -- "issue #<番号>(<owne
 
 影響リポジトリごとに以下を行う．**複数リポジトリに影響する場合，1つのセッションで複数リポジトリを串刺しに編集しない．**このリポジトリでの対応が完了したら，他の影響リポジトリについては，対象リポジトリと該当issue番号を明示した上で，そのリポジトリのプロジェクトで本スキルを実行するようユーザーに依頼する(このセッションから直接他リポジトリを操作しない)．issue自体は1つのままでよく，実装の実行単位だけをリポジトリごとに分ける．
 
+**例外(`specification`):** `specification`リポジトリはClaude Codeプロジェクトを持たない(非プロジェクトという既存設計のため)ため，串刺し禁止ルールの対象外とする．影響リポジトリに`specification`が含まれる場合，`specification`に対しては現在のセッションから直接ブランチ作成・ファイル操作・PR作成を行ってよい(別セッションへの依頼は不要)．`specification`以外の複数リポジトリにまたがる場合は，それらの間では引き続き串刺し禁止ルールが適用される．
+
 ### 4.1 作業場所の準備
 
 `EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**この場合は直後の`git checkout -b`によるブランチ作成コードブロックを実行しない**．
@@ -47,6 +49,17 @@ git checkout <デフォルトブランチ>
 git pull
 git checkout -b fix/issue-<番号>-<内容を表す短い語句>
 ```
+
+**`specification`の場合は`EnterWorktree`も使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る．clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，現在のプロジェクト自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．
+
+**`<現在のプロジェクトルート>`は，このセッションが起動した元のプロジェクトディレクトリを指す．`EnterWorktree`のworktree(`.claude/worktrees/<name>/`配下)には作らない．**
+
+```
+gh repo clone tt-and-tk/specification "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>"
+git -C "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
+```
+
+各プロジェクトの`.gitignore`は`.worktrees/`を除外済みである前提とする(未対応の場合は別issueで一括対応する)．以降，`specification`向けのファイル操作・コミットは，cloneしたディレクトリ内で行う．
 
 ### 4.2 修正
 
@@ -64,6 +77,8 @@ gh pr create --repo <owner>/<repo> --title "<タイトル>" --body "<本文>" [-
 PR作成時の`--body`に，closeキーワード (`Closes owner/repo#番号`) またはリンクのみ (`Related to owner/repo#番号`) を含める．closeキーワードは1issueにつき1箇所のPRのみに付与する (issueが存在するリポジトリのPR，またはユーザーが指定したPR)．それ以外のリポジトリのPRは`Related to owner/repo#番号`のみを記載する．  
 
 **`--draft`は，closeキーワードを持つPRにのみ付ける．** マージするとissueが閉じるPRであることを一目で分かるようにするための運用．closeキーワードを持たない(`Related to`のみの)PRはissueを閉じないため，通常のPR(Ready)として作成する．  
+
+**`specification`の疑似隔離(4.1でcloneしたディレクトリ)で作業している場合**は以下の点が異なる．cloneしたディレクトリへの切り替えは`EnterWorktree`によるセッションの作業ディレクトリ切り替えを伴わない(素の`gh repo clone`で作っただけの)ため，セッションのカレントディレクトリは現在のプロジェクトのルートのままであり，`cd`しても次のBash呼び出しでは保持されない．そのため`git add`・`git commit`・`git push`は`git -C <cloneしたディレクトリの絶対パス> ...`の形式で実行し，`gh pr create`には`--head fix/issue-<番号>-<内容を表す短い語句>`を明示してpush先ブランチを指定する．
 
 ### 4.4 自動レビューループ
 
@@ -134,6 +149,12 @@ git branch -d fix/issue-<番号>-<内容を表す短い語句>
 ```
 
 **それ以外の場合**(4.1で`EnterWorktree`を使った場合)，上記の代わりに`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．
+
+**`specification`の疑似隔離(4.1でclone)を使った場合**，cloneしたディレクトリを削除するだけでよい(ローカルブランチもディレクトリごと削除される．`specification`本体のローカルクローンには一切触れないため，そちらのブランチ削除は不要)．
+
+```
+rm -rf <cloneしたディレクトリの絶対パス>
+```
 
 # レビュー指摘への向き合い方
 
