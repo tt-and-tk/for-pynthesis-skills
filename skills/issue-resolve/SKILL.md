@@ -59,7 +59,7 @@ git -C <specificationの絶対パス> fetch origin
 git -C <specificationの絶対パス> worktree add "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" -b fix/issue-<番号>-<内容を表す短い語句> origin/<デフォルトブランチ>
 ```
 
-現在のプロジェクトの`.gitignore`に`.worktrees/`が無ければ追記し，誤って現在のプロジェクト自身にコミットされないようにする．この`.gitignore`変更は`specification`ではなく現在のプロジェクト自身への変更なので，4.3の手順とは別に，現在のプロジェクトの通常のブランチで`git add`・`git commit`・`git push`してこのリポジトリのPRに含める．以降，`specification`向けのファイル操作・コミットは，疑似worktreeディレクトリ内で行う．
+現在のプロジェクトの`.gitignore`に`.worktrees/`が無ければ追記し，誤って現在のプロジェクト自身にコミットされないようにする．この`.gitignore`変更は`specification`ではなく現在のプロジェクト自身への変更である．今回のissueが現在のプロジェクトにも影響する場合は，4.3の手順とは別に，そのリポジトリの通常のブランチで`git add`・`git commit`・`git push`してPRに含める．**今回のissueの影響が`specification`のみの場合**(現在のプロジェクト自身には変更がない場合)は，このissueとは無関係な小さな保守的変更として，別途ブランチを切り(`fix/issue-<番号>`のブランチ名は使わない)，`.gitignore`変更のみのPRを作成する(closeキーワード・`Related to`のいずれも付けない)．以降，`specification`向けのファイル操作・コミットは，疑似worktreeディレクトリ内で行う．
 
 ### 4.2 修正
 
