@@ -150,9 +150,10 @@ git branch -d fix/issue-<番号>-<内容を表す短い語句>
 
 **それ以外の場合**(4.1で`EnterWorktree`を使った場合)，上記の代わりに`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．
 
-**`specification`の疑似worktree(4.1)を使った場合**，以下でworktreeとブランチをまとめて削除する．
+**`specification`の疑似worktree(4.1)を使った場合**，以下でworktreeとブランチをまとめて削除する．`fetch`を挟まないと，`specification`の作業ツリー側のデフォルトブランチがマージ済みコミットを取得しておらず，`branch -d`が「fully merged」と判定できず失敗することがある．
 
 ```
+git -C <specificationの絶対パス> fetch origin
 git -C <specificationの絶対パス> worktree remove <疑似worktreeの絶対パス>
 git -C <specificationの絶対パス> branch -d fix/issue-<番号>-<内容を表す短い語句>
 ```
