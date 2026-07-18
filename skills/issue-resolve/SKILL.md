@@ -52,6 +52,8 @@ git checkout -b fix/issue-<番号>-<内容を表す短い語句>
 
 **`specification`の場合は`EnterWorktree`も使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る(ドキュメントのみの小規模リポジトリのためcloneのコストは無視できる)．cloneするため，ローカルに`specification`のクローンがあるかどうか・その状態(ブランチ・fetch状況)に依存せず，常にリモートの最新から始められる．clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，現在のプロジェクト自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．
 
+**この`<現在のプロジェクトルート>`は，このセッションが起動した元のプロジェクトディレクトリを指し，`EnterWorktree`で作成したworktree(`.claude/worktrees/<name>/`配下)を指すのではない．** 現在のプロジェクト自身も今回のissueの対象で`EnterWorktree`を使っている場合，`specification`のclone先をそのworktree内に置いてしまうと，先に現在のプロジェクトのPRがマージされ手順6の`ExitWorktree`(`remove`)を実行した際に，worktreeごと`specification`向けのclone(未完了・未pushの可能性がある)も巻き添えで削除される．`specification`向けのcloneと現在のプロジェクトのworktreeは，それぞれのPRが独立してレビュー・マージされるため，ライフサイクルを分離しておく必要がある．
+
 ```
 gh repo clone tt-and-tk/specification "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>"
 git -C "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
