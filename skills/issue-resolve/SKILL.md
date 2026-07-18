@@ -50,21 +50,21 @@ git pull
 git checkout -b fix/issue-<番号>-<内容を表す短い語句>
 ```
 
-**`specification`の場合は`EnterWorktree`も使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る(ドキュメントのみの小規模リポジトリのためcloneのコストは無視できる)．cloneするため，ローカルに`specification`のクローンがあるかどうか・その状態(ブランチ・fetch状況)に依存せず，常にリモートの最新から始められる．clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，現在のプロジェクト自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．
+**`specification`の場合は`EnterWorktree`も使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る．clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，現在のプロジェクト自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．
 
-**この`<現在のプロジェクトルート>`は，このセッションが起動した元のプロジェクトディレクトリを指し，`EnterWorktree`で作成したworktree(`.claude/worktrees/<name>/`配下)を指すのではない．** 現在のプロジェクト自身も今回のissueの対象で`EnterWorktree`を使っている場合，`specification`のclone先をそのworktree内に置いてしまうと，先に現在のプロジェクトのPRがマージされ手順6の`ExitWorktree`(`remove`)を実行した際に，worktreeごと`specification`向けのclone(未完了・未pushの可能性がある)も巻き添えで削除される．`specification`向けのcloneと現在のプロジェクトのworktreeは，それぞれのPRが独立してレビュー・マージされるため，ライフサイクルを分離しておく必要がある．
+**`<現在のプロジェクトルート>`は，このセッションが起動した元のプロジェクトディレクトリを指す．`EnterWorktree`のworktree(`.claude/worktrees/<name>/`配下)には作らない．**
 
 ```
 gh repo clone tt-and-tk/specification "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>"
 git -C "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
 ```
 
-`.gitignore`への`.worktrees/`追記は，`specification`ではなく現在のプロジェクト自身への変更である(誤って現在のプロジェクト自身にコミットされないようにするため)．追記先のブランチ・PRは，今回のissueが現在のプロジェクトにも影響するかどうかで変わる．
+現在のプロジェクトの`.gitignore`に`.worktrees/`が無ければ追記し，clone先ディレクトリが誤って現在のプロジェクト自身にコミットされないようにする．この`.gitignore`変更をどこでコミットするかは，今回のissueが現在のプロジェクト自身にも影響するかどうかで変わる．
 
-- 現在のプロジェクトにも影響する場合: 4.3の手順とは別に，そのリポジトリの通常のブランチで`git add`・`git commit`・`git push`してPRに含める
-- 現在のプロジェクト自身には変更がない場合(影響リポジトリが`specification`のみ，または`specification`と現在のプロジェクト以外の別リポジトリの場合): このissueとは無関係な小さな保守的変更として，別途ブランチを切り(`fix/issue-<番号>`のブランチ名は使わない)，`.gitignore`変更のみのPRを作成する(closeキーワード・`Related to`のいずれも付けない)
+- 現在のプロジェクトにも影響する場合: 4.3で今回のissue対応としてコミットするファイルに`.gitignore`も含める
+- 現在のプロジェクト自身には変更がない場合(影響リポジトリが`specification`のみ，または`specification`と現在のプロジェクト以外の別リポジトリの場合): このissueとは無関係な変更なので，`fix/issue-<番号>`とは別の専用ブランチを切り，`.gitignore`変更のみのPRを作成する(closeキーワード・`Related to`のいずれも付けない)
 
-以降，`specification`向けのファイル操作・コミットは，cloneしたディレクトリ内で行う．なお，この`.gitignore`変更がマージされ`git pull`で元のディレクトリに反映されるまでの間は，元のディレクトリの`git status`で`.worktrees/`が未追跡ディレクトリとして表示されることがあるが，4.3で対象ファイルを明示して`git add`するため実害はない．
+以降，`specification`向けのファイル操作・コミットは，cloneしたディレクトリ内で行う．なお，この`.gitignore`変更が現在のプロジェクトのデフォルトブランチにマージされるまでの間，元のディレクトリの`git status`では`.worktrees/`が未追跡ディレクトリとして表示されるが，4.3では`.gitignore`を含め変更したファイルを個別に指定して`git add`するため，誤ってコミットされることはない．
 
 ### 4.2 修正
 
