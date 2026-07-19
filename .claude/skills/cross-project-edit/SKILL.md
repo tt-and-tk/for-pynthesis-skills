@@ -60,7 +60,7 @@ git -C <cloneしたディレクトリの絶対パス> push -u origin fix/issue-<
 gh pr create --repo tt-and-tk/<リポジトリ名> --head fix/issue-<番号>-<内容を表す短い語句> --title "<タイトル>" --body "<本文>" [--draft]
 ```
 
-PRの`--body`にcloseキーワード(`Closes tt-and-tk/for-pynthesis-skills#番号`．1issueにつき1箇所のみ，通常はissueが存在する`for-pynthesis-skills`のPR)またはリンクのみ(`Related to tt-and-tk/for-pynthesis-skills#番号`)を含める．`--draft`はcloseキーワードを持つPRにのみ付ける．
+PRの`--body`にcloseキーワード(`Closes tt-and-tk/for-pynthesis-skills#番号`)またはリンクのみ(`Related to tt-and-tk/for-pynthesis-skills#番号`)を含める．closeキーワードは`for-pynthesis-skills`のPRにのみ付与する(issueは常にこのリポジトリに存在するため)．それ以外のリポジトリのPRは`Related to`のみを記載する．`--draft`はcloseキーワードを持つPRにのみ付ける．
 
 ### 4-4. 自動レビューループ
 
