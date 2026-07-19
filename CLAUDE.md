@@ -25,3 +25,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 含まれるスキル
 
 `README.md`を参照．
+
+## 本リポジトリ専用のスキル(プラグイン非配布)
+
+`.claude/skills/cross-project-edit`: 複数プロジェクトに横断的に影響する修正を1issue・1セッションでまとめて行うスキル．`for-pynthesis-skills`の`.claude`ディレクトリにのみ配置し，プラグインとして他プロジェクトには配布しない．
