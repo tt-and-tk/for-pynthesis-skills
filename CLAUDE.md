@@ -20,7 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `pynesis` | `compiler/` | 独自言語Pynesis(`.pn`)をアセンブリ言語Pyntaxis(`.pt`)に変換するコンパイラ |
 | `pyntaxis` | `assembler/` | 自作アセンブリ言語Pyntaxis(`.pt`)をSystemVerilog ROM(`.sv`)に変換するアセンブラ |
 | `qurge` | `mypc/` | CPU・メモリ等を含むハードウェア一式のVivadoプロジェクト(ハードウェア実装) |
-| `for-pynthesis-skills`(本リポジトリ) | `for-pynthesis-skills/` | 上記各リポジトリで共有するissue起票・対応支援スキル(`issue-create`/`issue-resolve`)を提供する．自身はハードウェア・コンパイラ・アセンブラのソースを持たない |
+| `for-pynthesis-skills`(本リポジトリ) | `for-pynthesis-skills/` | 上記各リポジトリで共有するissue起票・対応支援スキル(`issue-create`/`issue-resolve`)を提供する．自身はハードウェア・コンパイラ・アセンブラのソースを持たない．特定のリポジトリが主担当と判断できない，全リポジトリに影響するissueの起票先(受け皿)も兼ねる |
 
 ## 含まれるスキル
 
