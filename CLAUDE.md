@@ -29,3 +29,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 本リポジトリ専用のスキル(プラグイン非配布)
 
 `.claude/skills/cross-project-edit`: 複数プロジェクトに横断的に影響する修正を1issue・1セッションでまとめて行うスキル．`for-pynthesis-skills`の`.claude`ディレクトリにのみ配置し，プラグインとして他プロジェクトには配布しない．
+
+## プラグイン内容変更後の更新
+
+このリポジトリの内容(スキル等)を変更するPRがマージされたら，`issue-resolve`・`cross-project-edit`いずれの後片付け手順の一環としても，以下を実行してインストール済みプラグインを最新化する．
+
+```
+claude plugin marketplace update for-pynthesis-skills
+claude plugin update for-pynthesis-skills@for-pynthesis-skills
+```
+
+反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える．

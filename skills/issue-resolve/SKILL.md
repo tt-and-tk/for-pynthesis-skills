@@ -152,6 +152,13 @@ git branch -d fix/issue-<番号>-<内容を表す短い語句>
 
 **`specification`の疑似隔離(4.1でclone)を使った場合**，cloneしたディレクトリを削除するだけでよい(ローカルブランチもディレクトリごと削除される．`specification`本体のローカルクローンには一切触れないため，そちらのブランチ削除は不要)．
 
+**対象リポジトリが`for-pynthesis-skills`自身の場合**，上記に加えて以下を実行し，インストール済みプラグインを最新化する(反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える)．
+
+```
+claude plugin marketplace update for-pynthesis-skills
+claude plugin update for-pynthesis-skills@for-pynthesis-skills
+```
+
 ```
 rm -rf <cloneしたディレクトリの絶対パス>
 ```
