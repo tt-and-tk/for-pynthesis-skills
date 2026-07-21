@@ -12,10 +12,17 @@
   },
   "permissions": {
     "allow": [
+      "Edit(C:\\D\\program\\xilinx\\pynq-z2\\pc\\for-pynthesis-skills\\**)",
+      "Write(C:\\D\\program\\xilinx\\pynq-z2\\pc\\for-pynthesis-skills\\**)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(git checkout:*)",
+      "Bash(git -C * add:*)",
+      "Bash(git -C * commit:*)",
+      "Bash(git -C * push:*)",
+      "Bash(git -C * checkout:*)",
+      "Bash(gh repo clone:*)",
       "Bash(git pull)",
       "Bash(git branch -d:*)",
       "Bash(git branch --show-current)",
@@ -32,7 +39,9 @@
       "Bash(gh api repos/*/issues/*/comments:*)",
       "Bash(gh issue view:*)",
       "Bash(gh issue create:*)",
-      "Bash(claude -p:*)"
+      "Bash(claude -p:*)",
+      "Bash(claude plugin marketplace update:*)",
+      "Bash(claude plugin update:*)"
     ],
     "deny": [
       "Bash(gh pr merge:*)",
