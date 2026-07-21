@@ -13,7 +13,6 @@
   "permissions": {
     "allow": [
       "Edit(C:\\D\\program\\xilinx\\pynq-z2\\pc\\for-pynthesis-skills\\**)",
-      "Write(C:\\D\\program\\xilinx\\pynq-z2\\pc\\for-pynthesis-skills\\**)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
