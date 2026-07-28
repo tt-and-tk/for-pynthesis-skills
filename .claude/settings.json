@@ -43,11 +43,15 @@
       "Bash(claude plugin update:*)"
     ],
     "ask": [
-      "Edit(**/.claude/settings*.json)",
-      "Edit(**/.claude/hooks/**)"
+      "Edit(/.claude/settings*.json)",
+      "Edit(/.claude/hooks/**)",
+      "Edit(/.claude-plugin/**)",
+      "Edit(/hooks/**)",
+      "Edit(/.mcp.json)"
     ],
     "deny": [
-      "Edit(**/.git/**)",
+      "Edit(/.git)",
+      "Edit(/.git/**)",
       "Bash(gh pr merge:*)",
       "Bash(gh pr ready:*)"
     ]
