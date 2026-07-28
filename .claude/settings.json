@@ -42,6 +42,10 @@
       "Bash(claude plugin marketplace update:*)",
       "Bash(claude plugin update:*)"
     ],
+    "ask": [
+      "Edit(**/.claude/settings*.json)",
+      "Edit(**/.claude/hooks/**)"
+    ],
     "deny": [
       "Edit(**/.git/**)",
       "Bash(gh pr merge:*)",
