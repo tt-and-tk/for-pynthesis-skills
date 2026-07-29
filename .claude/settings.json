@@ -12,7 +12,7 @@
   },
   "permissions": {
     "allow": [
-      "Edit(C:\\D\\program\\xilinx\\pynq-z2\\pc\\for-pynthesis-skills\\**)",
+      "Edit(/**)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
@@ -42,7 +42,16 @@
       "Bash(claude plugin marketplace update:*)",
       "Bash(claude plugin update:*)"
     ],
+    "ask": [
+      "Edit(/**/.claude/settings*.json)",
+      "Edit(/**/.claude/hooks/**)",
+      "Edit(/**/.claude-plugin/**)",
+      "Edit(/**/hooks/**)",
+      "Edit(/**/.mcp.json)"
+    ],
     "deny": [
+      "Edit(/**/.git)",
+      "Edit(/**/.git/**)",
       "Bash(gh pr merge:*)",
       "Bash(gh pr ready:*)"
     ]
