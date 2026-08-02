@@ -108,8 +108,8 @@ claude -p [--add-dir <対象リポジトリのパス>...] -- "<対象ファイ�
 Draft解除はユーザーが行う．コメントを取得し，指摘があれば修正してコミット・pushする(cloneで作業しているリポジトリについては4-1の規定に従い`git -C <絶対パス>`形式で実行する)．インラインのレビューコメントとPR全体へのコメントは別に取得するため，以下は両方実行する．
 
 ```
-gh api repos/tt-and-tk/<リポジトリ名>/pulls/<PR番号>/comments
-gh api repos/tt-and-tk/<リポジトリ名>/issues/<PR番号>/comments
+gh api --paginate repos/tt-and-tk/<リポジトリ名>/pulls/<PR番号>/comments
+gh api --paginate repos/tt-and-tk/<リポジトリ名>/issues/<PR番号>/comments
 ```
 
 指摘一つずつについて，該当コメントへの返信で対応内容を伝える(必須)．インラインのレビューコメントにはスレッド返信，PR全体へのコメントには通常のコメントで返信するため，以下は該当する側のみ実行する．
