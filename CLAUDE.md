@@ -32,7 +32,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## スキル間で同一に保つ記述
 
-`issue-create`・`issue-resolve`・`cross-project-edit`の各`SKILL.md`が持つ「コマンド実行の規定」セクションは，3つのスキルで一字一句同一の内容に保つ．スキルは個別に読み込まれ共通ファイルを参照できないための重複であり，片方だけを修正しない．
+`issue-create`・`issue-resolve`・`cross-project-edit`の各`SKILL.md`が持つ「コマンド実行の規定」セクションは，3つのスキルで一字一句同一の内容に保つ．スキルは個別に読み込まれ共通ファイルを参照できないための重複であり，一部のスキルだけを修正しない．
 
 ## プラグイン内容変更後の更新
 
