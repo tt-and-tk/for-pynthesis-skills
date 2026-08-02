@@ -30,6 +30,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `.claude/skills/cross-project-edit`: 複数プロジェクトに横断的に影響する修正を1issue・1セッションでまとめて行うスキル．`for-pynthesis-skills`の`.claude`ディレクトリにのみ配置し，プラグインとして他プロジェクトには配布しない．
 
+## スキル間で同一に保つ記述
+
+`issue-create`・`issue-resolve`・`cross-project-edit`の各`SKILL.md`が持つ「コマンド実行の規定」セクションは，3つのスキルで一字一句同一の内容に保つ．スキルは個別に読み込まれ共通ファイルを参照できないための重複であり，片方だけを修正しない．
+
 ## プラグイン内容変更後の更新
 
 このリポジトリの内容(スキル等)を変更するPRがマージされたら，`issue-resolve`・`cross-project-edit`いずれの後片付け手順の一環としても，以下を実行してインストール済みプラグインを最新化する．
