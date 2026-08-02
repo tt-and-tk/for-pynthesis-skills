@@ -205,7 +205,7 @@ gh pr comment <PR番号> --repo <owner>/<repo> --body "<対応内容>"
 gh issue view <番号> --repo <owner>/<repo>
 ```
 
-**`EnterWorktree`で作業した場合**(4.1)，`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．
+**`EnterWorktree`で作業した場合**(4.1)，`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．Vivadoプロジェクトを含むリポジトリでは，Git管理外の合成の中間生成物も一緒に消えるため，実機での確認が途中の場合は削除せず，確認が終わってから行う．
 
 **`specification`の疑似隔離(4.1でclone)を使った場合**，cloneしたディレクトリを削除するだけでよい(ローカルブランチもディレクトリごと削除される．`specification`本体のローカルクローンには一切触れないため，そちらのブランチ削除は不要)．
 
