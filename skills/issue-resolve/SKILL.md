@@ -42,6 +42,12 @@ claude -p [--add-dir <別リポジトリのパス>...] -- "issue #<番号>(<owne
 
 `EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**この場合は直後の`git checkout -b`によるブランチ作成コードブロックを実行しない**．
 
+**`EnterWorktree`が実際に作るブランチ名は，渡した`name`とは一致しない．** 接頭辞の付与やスラッシュの置換が行われるため，以降の手順でブランチ名を書く場合は，渡した`name`をそのまま使わず，作成直後に実際の名前を確認して用いる．
+
+```
+git branch --show-current
+```
+
 **ただしVivadoプロジェクトを含むリポジトリの場合は対象外とする．** XPRファイルの絶対パス依存やキャッシュ生成コストがあるため，worktreeでの作業は行わず，従来通り単一ディレクトリで直列に作業する(以下のコードブロックでブランチ作成のみ行う)．
 
 ```
@@ -72,9 +78,11 @@ git -C "<現在のプロジェクトルート>/.worktrees/specification-fix-issu
 ```
 git add <変更したファイル>
 git commit -m "<コミットメッセージ>"
-git push -u origin fix/issue-<番号>-<内容を表す短い語句>
+git push -u origin HEAD
 gh pr create --repo <owner>/<repo> --title "<タイトル>" --body "<本文>" [--draft]
 ```
+
+push先は，ブランチ名を書かず`HEAD`で現在のブランチを指す(`EnterWorktree`が作るブランチ名は`name`と一致しないため，名前を書くと存在しない別のブランチを新規に作ってしまう)．
 
 PR作成時の`--body`に，closeキーワード (`Closes owner/repo#番号`) またはリンクのみ (`Related to owner/repo#番号`) を含める．closeキーワードは1issueにつき1箇所のPRのみに付与する (issueが存在するリポジトリのPR，またはユーザーが指定したPR)．それ以外のリポジトリのPRは`Related to owner/repo#番号`のみを記載する．  
 

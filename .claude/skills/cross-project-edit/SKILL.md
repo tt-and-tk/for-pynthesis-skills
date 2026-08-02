@@ -33,7 +33,7 @@ claude -p [--add-dir <対象リポジトリのパス>...] -- "issue #<番号>(tt
 
 ### 4-1. 作業場所の準備
 
-`for-pynthesis-skills`自身の場合，`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成する．
+`for-pynthesis-skills`自身の場合，`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成する．**`EnterWorktree`が実際に作るブランチ名は，渡した`name`とは一致しない**(接頭辞の付与やスラッシュの置換が行われる)ため，以降の手順でブランチ名を書く場合は，作成直後に`git branch --show-current`で実際の名前を確認して用いる．
 
 それ以外のリポジトリの場合，リモートから直接cloneして隔離を作る．
 
@@ -57,9 +57,11 @@ git -C "<現在のプロジェクトルート>/.worktrees/<リポジトリ名>-f
 ```
 git add <変更したファイル>
 git commit -m "<コミットメッセージ>"
-git push -u origin fix/issue-<番号>-<内容を表す短い語句>
+git push -u origin HEAD
 gh pr create --repo tt-and-tk/for-pynthesis-skills --title "<タイトル>" --body "<本文>" [--draft]
 ```
+
+push先は，ブランチ名を書かず`HEAD`で現在のブランチを指す(`EnterWorktree`が作るブランチ名は`name`と一致しないため，名前を書くと存在しない別のブランチを新規に作ってしまう)．cloneしたリポジトリ側は自分で`git checkout -b`したブランチなので，名前をそのまま書いてよい．
 
 それ以外のリポジトリの場合
 
