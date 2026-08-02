@@ -50,7 +50,7 @@ git pull
 git checkout -b fix/issue-<番号>-<内容を表す短い語句>
 ```
 
-**`specification`の場合は`EnterWorktree`も使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る．clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，現在のプロジェクト自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．
+**`specification`の場合は`EnterWorktree`も使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る(以降これを**疑似隔離**と呼ぶ)．**GitHub上のリモートから取得した独立した作業用コピーであり，`specification`のローカルディレクトリや，現在作業しているプロジェクトのworktreeとは無関係である．** clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，現在のプロジェクト自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．
 
 **`<現在のプロジェクトルート>`は，このセッションが起動した元のプロジェクトディレクトリを指す．`EnterWorktree`のworktree(`.claude/worktrees/<name>/`配下)には作らない．**
 
