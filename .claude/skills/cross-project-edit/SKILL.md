@@ -48,7 +48,7 @@ claude -p [--add-dir <対象リポジトリのパス>...] -- "issue #<番号>(tt
 
 ### 4-1. 作業場所の準備
 
-`for-pynthesis-skills`自身の場合，`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成する．**`EnterWorktree`が実際に作るブランチ名は，渡した`name`とは一致しない**(接頭辞の付与やスラッシュの置換が行われる)ため，以降の手順でブランチ名を書く場合は，作成直後に`git branch --show-current`で実際の名前を確認して用いる．
+`for-pynthesis-skills`自身の場合，`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成する．**`EnterWorktree`が作るブランチ名は，渡した`name`に`worktree-`を接頭辞として付与し，`/`を`+`に置換した`worktree-fix+issue-<番号>-<内容を表す短い語句>`になる．** 以降の手順でブランチ名を書く場合は，この形式をそのまま用いる．
 
 それ以外のリポジトリの場合，リモートから直接cloneして隔離を作る．
 
