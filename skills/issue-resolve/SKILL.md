@@ -57,11 +57,7 @@ claude -p [--add-dir <別リポジトリのパス>...] -- "issue #<番号>(<owne
 
 `EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**別途`git checkout -b`でブランチを作る必要はない**．
 
-**`EnterWorktree`が実際に作るブランチ名は，渡した`name`とは一致しない．** 接頭辞の付与やスラッシュの置換が行われるため，以降の手順でブランチ名を書く場合は，渡した`name`をそのまま使わず，作成直後に実際の名前を確認して用いる．
-
-```
-git branch --show-current
-```
+**`EnterWorktree`が作るブランチ名は，渡した`name`に`worktree-`を接頭辞として付与し，`/`を`+`に置換した`worktree-fix+issue-<番号>-<内容を表す短い語句>`になる．** 以降の手順でブランチ名を書く場合は，この形式をそのまま用いる．
 
 **`specification`の場合は`EnterWorktree`が使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る(以降これを**疑似隔離**と呼ぶ)．**GitHub上のリモートから取得した独立した作業用コピーであり，`specification`のローカルディレクトリや，現在作業しているプロジェクトのworktreeとは無関係である．** clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，現在のプロジェクト自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．
 
