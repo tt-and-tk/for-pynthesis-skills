@@ -48,16 +48,19 @@ claude -p [--add-dir <対象リポジトリのパス>...] -- "issue #<番号>(tt
 
 ### 4-1. 作業場所の準備
 
+**対象リポジトリに`for-pynthesis-skills`自身が含まれる場合，このセッションでは必ず`for-pynthesis-skills`から先に4-1〜4-5を行う．** 他リポジトリのclone先(下記)は，このセッションの現在の作業ディレクトリを基準にするため，順序を誤ると先にcloneした他リポジトリの作業ディレクトリが，後から実行する`for-pynthesis-skills`自身の`EnterWorktree`による隔離範囲の外側になり，以降のgit操作がブロックされる．
+
 `for-pynthesis-skills`自身の場合，`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成する．**`EnterWorktree`が作るブランチ名は，渡した`name`に`worktree-`を接頭辞として付与し，`/`を`+`に置換した`worktree-fix+issue-<番号>-<内容を表す短い語句>`になる．** 以降の手順でブランチ名を書く場合は，この形式をそのまま用いる．
 
-それ以外のリポジトリの場合，リモートから直接cloneして隔離を作る．
+それ以外のリポジトリの場合，リモートから直接cloneして隔離を作る．clone先は，`pwd`で確認したセッションの現在の作業ディレクトリ内(`<現在の作業ディレクトリ>/.worktrees/`配下)とする．
+
+**clone先の基準に`pwd`の実行結果を使う理由:** `EnterWorktree`はセッションの作業ディレクトリを新しいworktree(`.claude/worktrees/<name>/`配下)に切り替えるが，実際に作られるディレクトリ名の変換規則(`name`の`/`がそのままか，ブランチ名同様`+`に置換されるか等)はツールの仕様として明記されていない．この変換規則を推測して`<プロジェクトルート>/.claude/worktrees/<name>/...`のようにパスを決め打ちすると，推測が外れた場合に存在しないパスを操作しようとして失敗する．`pwd`で都度確認すれば，`for-pynthesis-skills`自身の`EnterWorktree`を実行済みかどうか・実際のディレクトリ名がどうなっているかによらず，常に正しい現在地を基準にできる．上記のとおり`for-pynthesis-skills`自身を先に処理していれば，その後の`pwd`は自動的にそのworktree配下を指すため，他リポジトリのcloneも自動的にworktree内にネストする．`for-pynthesis-skills`自身が対象リポジトリに含まれない場合，`pwd`はこのセッションが起動した元のプロジェクトディレクトリを指す．
 
 ```
-gh repo clone tt-and-tk/<リポジトリ名> "<現在のプロジェクトルート>/.worktrees/<リポジトリ名>-fix-issue-<番号>-<内容を表す短い語句>"
-git -C "<現在のプロジェクトルート>/.worktrees/<リポジトリ名>-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
+pwd
+gh repo clone tt-and-tk/<リポジトリ名> "<現在の作業ディレクトリ>/.worktrees/<リポジトリ名>-fix-issue-<番号>-<内容を表す短い語句>"
+git -C "<現在の作業ディレクトリ>/.worktrees/<リポジトリ名>-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
 ```
-
-`<現在のプロジェクトルート>`は，このセッションが起動した元のプロジェクトディレクトリを指す(`EnterWorktree`のworktree配下には作らない)．
 
 **cloneで作業するリポジトリに対して以降の手順で実行するgitコマンドは，すべて`git -C <cloneしたディレクトリの絶対パス> ...`の形式で実行する．** `add`・`commit`・`push`だけでなく，`diff`・`status`・`log`・`rev-parse`など読み取り系も含めた全てが対象である．cloneしただけではセッションの作業ディレクトリは切り替わらず，clone先はセッションの作業ディレクトリの外にあるため`cd`しても次のBash呼び出しには維持されない．形式を省くと別のリポジトリを操作してしまう．`EnterWorktree`を使う`for-pynthesis-skills`自身については，セッションの作業ディレクトリがその中にあるため素の形式でよい．
 
@@ -127,7 +130,7 @@ gh pr comment <PR番号> --repo tt-and-tk/<リポジトリ名> --body "<対応�
 
 ## 6. マージ後の後始末
 
-マージ完了の報告を受けたら，issueがクローズされたことを確認する．後始末は，`for-pynthesis-skills`自身は`ExitWorktree`(`remove`)，それ以外は`rm -rf <cloneしたディレクトリの絶対パス>`．
+マージ完了の報告を受けたら，issueがクローズされたことを確認する．後始末は，`for-pynthesis-skills`自身は`ExitWorktree`(`remove`)，それ以外は`rm -rf <cloneしたディレクトリの絶対パス>`．**両方を同一セッションで使った場合，`ExitWorktree`を先に実行する．** 4-1の順序どおり他リポジトリのcloneが`for-pynthesis-skills`自身のworktree配下にネストしていれば，`ExitWorktree`でworktreeごと削除されるため，その場合の個別の`rm -rf`は不要になる(対象が既に存在せず空振りになる)．
 
 `for-pynthesis-skills`自身が対象リポジトリに含まれる場合，上記に加えて以下を実行し，インストール済みプラグインを最新化する(反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える)．
 

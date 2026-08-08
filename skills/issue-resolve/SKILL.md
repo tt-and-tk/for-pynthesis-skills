@@ -55,20 +55,21 @@ claude -p [--add-dir <別リポジトリのパス>...] -- "issue #<番号>(<owne
 
 ### 4.1 作業場所の準備
 
-`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**別途`git checkout -b`でブランチを作る必要はない**．
+`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**別途`git checkout -b`でブランチを作る必要はない**．**対象リポジトリと`specification`の両方がこのセッションでの対象になる場合(下記)，`specification`の疑似隔離cloneより先にこの`EnterWorktree`を実行する．**
 
 **`EnterWorktree`が作るブランチ名は，渡した`name`に`worktree-`を接頭辞として付与し，`/`を`+`に置換した`worktree-fix+issue-<番号>-<内容を表す短い語句>`になる．** 以降の手順でブランチ名を書く場合は，この形式をそのまま用いる．
 
-**`specification`の場合は`EnterWorktree`が使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る(以降これを**疑似隔離**と呼ぶ)．**GitHub上のリモートから取得した独立した作業用コピーであり，`specification`のローカルディレクトリや，現在作業しているプロジェクトのworktreeとは無関係である．** clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，現在のプロジェクト自身のディレクトリツリー内(`<現在のプロジェクトルート>/.worktrees/`配下)とする．
+**`specification`の場合は`EnterWorktree`が使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る(以降これを**疑似隔離**と呼ぶ)．**GitHub上のリモートから取得した独立した作業用コピーであり，`specification`のローカルディレクトリとは無関係である．** clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，`pwd`で確認したセッションの現在の作業ディレクトリ内(`<現在の作業ディレクトリ>/.worktrees/`配下)とする．
 
-**`<現在のプロジェクトルート>`は，このセッションが起動した元のプロジェクトディレクトリを指す．`EnterWorktree`のworktree(`.claude/worktrees/<name>/`配下)には作らない．**
+**clone先の基準に`pwd`の実行結果を使う理由:** `EnterWorktree`はセッションの作業ディレクトリを新しいworktree(`.claude/worktrees/<name>/`配下)に切り替えるが，実際に作られるディレクトリ名の変換規則(`name`の`/`がそのままか，ブランチ名同様`+`に置換されるか等)はツールの仕様として明記されていない．この変換規則を推測して`<プロジェクトルート>/.claude/worktrees/<name>/...`のようにパスを決め打ちすると，推測が外れた場合に存在しないパスを操作しようとして失敗する．`pwd`で都度確認すれば，対象リポジトリ自身の`EnterWorktree`を実行済みかどうか・実際のディレクトリ名がどうなっているかによらず，常に正しい現在地を基準にできる．上記のとおり対象リポジトリ自身の`EnterWorktree`を先に実行していれば，その後の`pwd`は自動的にそのworktree配下を指すため，`specification`の疑似隔離cloneも自動的にworktree内にネストする．対象リポジトリ自身が`EnterWorktree`を使わない場合(このセッションで`specification`のみが対象の場合)，`pwd`はこのセッションが起動した元のプロジェクトディレクトリを指す．
 
 ```
-gh repo clone tt-and-tk/specification "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>"
-git -C "<現在のプロジェクトルート>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
+pwd
+gh repo clone tt-and-tk/specification "<現在の作業ディレクトリ>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>"
+git -C "<現在の作業ディレクトリ>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
 ```
 
-各プロジェクトの`.gitignore`は`.worktrees/`を除外済みである前提とする(未対応の場合は別issueで一括対応する)．
+各プロジェクトの`.gitignore`は`.worktrees/`を除外済みである前提とする(未対応の場合は別issueで一括対応する)．`EnterWorktree`のworktree配下にネストする場合も，そのworktreeは対象リポジトリと同じ内容をチェックアウトしているため，同じ`.gitignore`が有効である．
 
 **この方法で作業する場合に限り，以降の手順で`specification`に対して実行するgitコマンドは，すべて`git -C <cloneしたディレクトリの絶対パス> ...`の形式で実行する．** `add`・`commit`・`push`だけでなく，`diff`・`status`・`log`・`rev-parse`など読み取り系も含めた全てが対象である．cloneしただけではセッションの作業ディレクトリは切り替わらず，clone先はセッションの作業ディレクトリの外にあるため`cd`しても次のBash呼び出しには維持されない．形式を省くと現在のプロジェクトを操作してしまう．`EnterWorktree`を使う場合は，セッションの作業ディレクトリが対象リポジトリ内にあるため素の形式でよい．
 
@@ -207,11 +208,13 @@ gh issue view <番号> --repo <owner>/<repo>
 
 **`EnterWorktree`で作業した場合**(4.1)，`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．Vivadoプロジェクトを含むリポジトリでは，Git管理外の合成の中間生成物も一緒に消える(実機での確認はマージ前に済んでいるため支障はない)．
 
-**`specification`の疑似隔離(4.1でclone)を使った場合**，cloneしたディレクトリを削除するだけでよい(ローカルブランチもディレクトリごと削除される．`specification`本体のローカルクローンには一切触れないため，そちらのブランチ削除は不要)．
+**`specification`の疑似隔離(4.1でclone)を使った場合**，cloneしたディレクトリを削除する(ローカルブランチもディレクトリごと削除される．`specification`本体のローカルクローンには一切触れないため，そちらのブランチ削除は不要)．
 
 ```
 rm -rf <cloneしたディレクトリの絶対パス>
 ```
+
+**対象リポジトリ自身の`EnterWorktree`と`specification`の疑似隔離を同一セッションで両方使った場合**，4.1の順序どおり`EnterWorktree`を先に実行していれば，疑似隔離のclone先はそのworktree配下にネストしている．この場合，`ExitWorktree`を先に実行するとworktreeごと疑似隔離のcloneも削除されるため，上記の`rm -rf`は不要になる(対象が既に存在せず空振りになる)．`ExitWorktree`を先に行う．
 
 **対象リポジトリが`for-pynthesis-skills`自身の場合**，上記に加えて以下を実行し，インストール済みプラグインを最新化する(反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える)．
 
