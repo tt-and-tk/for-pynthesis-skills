@@ -22,12 +22,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `qurge` | `mypc/` | CPU・メモリ等を含むハードウェア一式のVivadoプロジェクト(ハードウェア実装) |
 | `for-pynthesis-skills`(本リポジトリ) | `for-pynthesis-skills/` | 上記各リポジトリで共有するissue起票・対応支援スキル(`issue-create`/`issue-resolve`)を提供する．自身はハードウェア・コンパイラ・アセンブラのソースを持たない．特定のリポジトリが主担当と判断できない，全リポジトリに影響するissueの起票先(受け皿)も兼ねる |
 
-## 権限設定(permissions)の方針
-
-このリポジトリを含む自作PCプロジェクトの各リポジトリの`.claude/settings.json`は，`permissions.defaultMode`を`"auto"`にしている．個別のコマンドを`permissions.allow`に網羅的に列挙する運用はしない(実行するコマンドの種類が多く，網羅すること自体が困難なため)．ソースコード修正やコミット・push等の各種コマンド実行は，このauto modeの判断に委ねて自動で進行させる想定である．
-
-`permissions.deny`には，auto modeの判断に関わらず絶対に実行してほしくない操作(PRのマージ・Ready化，issueのクローズ，`.git`ディレクトリの直接編集，`git push --force`・`git reset --hard`・`git clean -f`・`git branch -D`・`git push --delete`等の破壊的操作)のみを列挙する．`permissions.ask`には，`rm -rf`(疑似隔離のclone削除等，正当な用途があるため一律禁止にはしないが，実行前に必ず確認したい操作)や，設定ファイル・フック自体の編集など，完全に禁止はしないが常に確認を挟みたい操作を列挙する．
-
 ## 含まれるスキル
 
 `README.md`を参照．
