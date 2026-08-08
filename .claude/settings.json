@@ -14,20 +14,29 @@
     "defaultMode": "auto",
     "ask": [
       "Edit(/**/.claude/settings*.json)",
+      "Write(/**/.claude/settings*.json)",
       "Edit(/**/.claude/hooks/**)",
+      "Write(/**/.claude/hooks/**)",
       "Edit(/**/.claude-plugin/**)",
+      "Write(/**/.claude-plugin/**)",
       "Edit(/**/hooks/**)",
+      "Write(/**/hooks/**)",
       "Edit(/**/.mcp.json)",
+      "Write(/**/.mcp.json)",
       "Bash(rm -rf:*)"
     ],
     "deny": [
       "Edit(/**/.git)",
+      "Write(/**/.git)",
       "Edit(/**/.git/**)",
+      "Write(/**/.git/**)",
       "Bash(gh pr merge:*)",
       "Bash(gh pr ready:*)",
       "Bash(gh issue close:*)",
       "Bash(git push --force:*)",
       "Bash(git push -f:*)",
+      "Bash(git push --force-with-lease:*)",
+      "Bash(git push --force-if-includes:*)",
       "Bash(git reset --hard:*)"
     ]
   }
