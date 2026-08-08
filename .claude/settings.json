@@ -11,59 +11,24 @@
     "for-pynthesis-skills@for-pynthesis-skills": true
   },
   "permissions": {
-    "allow": [
-      "Edit(/**)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(git checkout:*)",
-      "Bash(git rev-parse:*)",
-      "Bash(git -C * add:*)",
-      "Bash(git -C * commit:*)",
-      "Bash(git -C * push:*)",
-      "Bash(git -C * checkout:*)",
-      "Bash(git -C * pull:*)",
-      "Bash(git -C * branch -d:*)",
-      "Bash(git -C * branch --show-current)",
-      "Bash(git -C * branch)",
-      "Bash(git -C * status:*)",
-      "Bash(git -C * diff:*)",
-      "Bash(git -C * log:*)",
-      "Bash(git -C * show:*)",
-      "Bash(git -C * rev-parse:*)",
-      "Bash(gh repo clone:*)",
-      "Bash(git pull)",
-      "Bash(git branch -d:*)",
-      "Bash(git branch --show-current)",
-      "Bash(git branch)",
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git show:*)",
-      "Bash(git remote -v)",
-      "Bash(gh pr create:*)",
-      "Bash(gh pr comment:*)",
-      "Bash(gh api repos/*/pulls/*/comments:*)",
-      "Bash(gh api repos/*/pulls/*/comments/*/replies:*)",
-      "Bash(gh api repos/*/issues/*/comments:*)",
-      "Bash(gh issue view:*)",
-      "Bash(gh issue create:*)",
-      "Bash(claude -p:*)",
-      "Bash(claude plugin marketplace update:*)",
-      "Bash(claude plugin update:*)"
-    ],
+    "defaultMode": "auto",
     "ask": [
       "Edit(/**/.claude/settings*.json)",
       "Edit(/**/.claude/hooks/**)",
       "Edit(/**/.claude-plugin/**)",
       "Edit(/**/hooks/**)",
-      "Edit(/**/.mcp.json)"
+      "Edit(/**/.mcp.json)",
+      "Bash(rm -rf:*)"
     ],
     "deny": [
       "Edit(/**/.git)",
       "Edit(/**/.git/**)",
       "Bash(gh pr merge:*)",
-      "Bash(gh pr ready:*)"
+      "Bash(gh pr ready:*)",
+      "Bash(gh issue close:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)"
     ]
   }
 }
