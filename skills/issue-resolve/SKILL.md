@@ -55,7 +55,7 @@ claude -p [--add-dir <別リポジトリのパス>...] -- "issue #<番号>(<owne
 
 ### 4.1 作業場所の準備
 
-`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**別途`git checkout -b`でブランチを作る必要はない**．**対象リポジトリと`specification`の両方がこのセッションでの対象になる場合(下記)，`specification`を直接cloneする作業より先にこの`EnterWorktree`を実行する．**
+`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**別途`git checkout -b`でブランチを作る必要はない**．**対象リポジトリと`specification`の両方がこのセッションでの対象になる場合(下記)，`specification`を直接cloneする作業より先にこの`EnterWorktree`を実行する．** 順序を誤ると，先にcloneした`specification`の作業ディレクトリが，後から実行する`EnterWorktree`による隔離範囲の外側になり，以降のgit操作がブロックされる．
 
 **`EnterWorktree`が作るブランチ名は，渡した`name`に`worktree-`を接頭辞として付与し，`/`を`+`に置換した`worktree-fix+issue-<番号>-<内容を表す短い語句>`になる．** 以降の手順でブランチ名を書く場合は，この形式をそのまま用いる．
 
