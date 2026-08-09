@@ -206,12 +206,22 @@ gh pr comment <PR番号> --repo <owner>/<repo> --body "<対応内容>"
 gh issue view <番号> --repo <owner>/<repo>
 ```
 
-**`EnterWorktree`で作業した場合**(4.1)，`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．Vivadoプロジェクトを含むリポジトリでは，Git管理外の合成の中間生成物も一緒に消える(実機での確認はマージ前に済んでいるため支障はない)．
+**`EnterWorktree`で作業した場合**(4.1)，`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．Vivadoプロジェクトを含むリポジトリでは，Git管理外の合成の中間生成物も一緒に消える(実機での確認はマージ前に済んでいるため支障はない)．その後，マージされた内容を元のローカルリポジトリに反映するため，以下を実行する．
+
+```
+git pull
+```
 
 **`specification`の疑似隔離(4.1でclone)を使った場合**，cloneしたディレクトリを削除する(ローカルブランチもディレクトリごと削除される．`specification`本体のローカルクローンには一切触れないため，そちらのブランチ削除は不要)．
 
 ```
 rm -rf <cloneしたディレクトリの絶対パス>
+```
+
+疑似隔離のcloneを削除しただけでは，マージされた内容は`specification`本体のローカルクローンに反映されない．手順3で`--add-dir`に指定した，`specification`の既存のローカルディレクトリに対して以下を実行し，最新化する．
+
+```
+git -C <specificationの既存のローカルディレクトリの絶対パス> pull
 ```
 
 **対象リポジトリ自身の`EnterWorktree`と`specification`の疑似隔離を同一セッションで両方使った場合**，4.1の順序どおり`EnterWorktree`を先に実行していれば，疑似隔離のclone先はそのworktree配下にネストしている．この場合，`ExitWorktree`を先に実行するとworktreeごと疑似隔離のcloneも削除されるため，上記の`rm -rf`は不要になる(対象が既に存在せず空振りになる)．`ExitWorktree`を先に行う．

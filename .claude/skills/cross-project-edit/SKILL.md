@@ -134,6 +134,18 @@ gh pr comment <PR番号> --repo tt-and-tk/<リポジトリ名> --body "<対応�
 
 マージ完了の報告を受けたら，issueがクローズされたことを確認する．後始末は，`for-pynthesis-skills`自身は`ExitWorktree`(`remove`)，それ以外は`rm -rf <cloneしたディレクトリの絶対パス>`．**両方を同一セッションで使った場合，`ExitWorktree`を先に実行する．** 4-1の順序どおり他リポジトリのcloneが`for-pynthesis-skills`自身のworktree配下にネストしていれば，`ExitWorktree`でworktreeごと削除されるため，その場合の個別の`rm -rf`は不要になる(対象が既に存在せず空振りになる)．
 
+`for-pynthesis-skills`自身については，`ExitWorktree`実行後に元のローカルリポジトリでマージされた内容を反映するため，以下を実行する．
+
+```
+git pull
+```
+
+cloneで作業した各リポジトリについては，cloneを削除しただけではマージされた内容が本体のローカルクローンに反映されない．手順3で`--add-dir`に指定した，各リポジトリの既存のローカルディレクトリに対して以下を実行し，最新化する．
+
+```
+git -C <各リポジトリの既存のローカルディレクトリの絶対パス> pull
+```
+
 `for-pynthesis-skills`自身が対象リポジトリに含まれる場合，上記に加えて以下を実行し，インストール済みプラグインを最新化する(反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える)．
 
 ```
