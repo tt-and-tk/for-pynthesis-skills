@@ -52,14 +52,14 @@ claude -p [--add-dir <対象リポジトリのパス>...] -- "issue #<番号>(tt
 
 `for-pynthesis-skills`自身の場合，`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成する．**`EnterWorktree`が作るブランチ名は，渡した`name`に`worktree-`を接頭辞として付与し，`/`を`+`に置換した`worktree-fix+issue-<番号>-<内容を表す短い語句>`になる．** 以降の手順でブランチ名を書く場合は，この形式をそのまま用いる．
 
-それ以外のリポジトリの場合，`EnterWorktree`は使わずリモートから直接cloneして隔離を作る．`EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`for-pynthesis-skills`以外のリポジトリは現在のリポジトリと兄弟関係にあるため使えない．また，サンドボックスの書き込み制限により兄弟の場所には直接cloneを作れないため，clone先は，`pwd`で確認したセッションの現在の作業ディレクトリ内(`<現在の作業ディレクトリ>/.worktrees/`配下)とする．
+それ以外のリポジトリの場合，`EnterWorktree`は使わずリモートから直接cloneして隔離を作る．`EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`for-pynthesis-skills`以外のリポジトリは現在のリポジトリと兄弟関係にあるため使えない．また，サンドボックスの書き込み制限により兄弟の場所には直接cloneを作れないため，clone先は，`pwd`で確認した作業中のローカルリポジトリ内(`<作業中のローカルリポジトリ>/.worktrees/`配下)とする．
 
-**clone先の基準に`pwd`の実行結果を使う理由:** `EnterWorktree`はセッションの作業ディレクトリを新しいworktree(`.claude/worktrees/<name>/`配下)に切り替えるが，実際に作られるディレクトリ名の変換規則(`name`の`/`がそのままか，ブランチ名同様`+`に置換されるか等)はツールの仕様として明記されていない．この変換規則を推測して`<プロジェクトルート>/.claude/worktrees/<name>/...`のようにパスを決め打ちすると，推測が外れた場合に存在しないパスを操作しようとして失敗する．`pwd`で都度確認すれば，`for-pynthesis-skills`自身の`EnterWorktree`を実行済みかどうか・実際のディレクトリ名がどうなっているかによらず，常に正しい現在地を基準にできる．上記のとおり`for-pynthesis-skills`自身を先に処理していれば，その後の`pwd`は自動的にそのworktree配下を指すため，他リポジトリのcloneも自動的にworktree内にネストする．`for-pynthesis-skills`自身が対象リポジトリに含まれない場合，`pwd`はこのセッションが起動した元のプロジェクトディレクトリを指す．
+**clone先の基準に`pwd`の実行結果を使う理由:** 他リポジトリのcloneを，`for-pynthesis-skills`自身の`EnterWorktree`のworktree内に作りたいためである．上記のとおり`for-pynthesis-skills`自身を先に処理していれば，`pwd`は自動的にそのworktree配下を指すため，他リポジトリのcloneも自動的にworktree内にネストする．
 
 ```
 pwd
-gh repo clone tt-and-tk/<リポジトリ名> "<現在の作業ディレクトリ>/.worktrees/<リポジトリ名>-fix-issue-<番号>-<内容を表す短い語句>"
-git -C "<現在の作業ディレクトリ>/.worktrees/<リポジトリ名>-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
+gh repo clone tt-and-tk/<リポジトリ名> "<作業中のローカルリポジトリ>/.worktrees/<リポジトリ名>-fix-issue-<番号>-<内容を表す短い語句>"
+git -C "<作業中のローカルリポジトリ>/.worktrees/<リポジトリ名>-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
 ```
 
 各プロジェクトの`.gitignore`は`.worktrees/`を除外済みである前提とする(未対応の場合は別issueで一括対応する)．`EnterWorktree`のworktree配下にネストする場合も，そのworktreeは対象リポジトリと同じ内容をチェックアウトしているため，同じ`.gitignore`が有効である．

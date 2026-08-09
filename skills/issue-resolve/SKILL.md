@@ -55,18 +55,18 @@ claude -p [--add-dir <別リポジトリのパス>...] -- "issue #<番号>(<owne
 
 ### 4.1 作業場所の準備
 
-`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**別途`git checkout -b`でブランチを作る必要はない**．**対象リポジトリと`specification`の両方がこのセッションでの対象になる場合(下記)，`specification`の疑似隔離cloneより先にこの`EnterWorktree`を実行する．**
+`EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**別途`git checkout -b`でブランチを作る必要はない**．**対象リポジトリと`specification`の両方がこのセッションでの対象になる場合(下記)，`specification`を直接cloneする作業より先にこの`EnterWorktree`を実行する．**
 
 **`EnterWorktree`が作るブランチ名は，渡した`name`に`worktree-`を接頭辞として付与し，`/`を`+`に置換した`worktree-fix+issue-<番号>-<内容を表す短い語句>`になる．** 以降の手順でブランチ名を書く場合は，この形式をそのまま用いる．
 
-**`specification`の場合は`EnterWorktree`が使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る(以降これを**疑似隔離**と呼ぶ)．**GitHub上のリモートから取得した独立した作業用コピーであり，`specification`のローカルディレクトリとは無関係である．** clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，`pwd`で確認したセッションの現在の作業ディレクトリ内(`<現在の作業ディレクトリ>/.worktrees/`配下)とする．
+**`specification`の場合は`EnterWorktree`が使えない．** `EnterWorktree`は現在のリポジトリまたはそこにネストしたリポジトリにしか使えず，`specification`は現在のリポジトリと兄弟関係にあるためである．代わりに，`specification`をリモートから直接cloneして疑似的な隔離を作る(以降これを**疑似隔離**と呼ぶ)．**GitHub上のリモートから取得した独立した作業用コピーであり，`specification`のローカルディレクトリとは無関係である．** clone先は，サンドボックスの書き込み制限により`specification`と兄弟の場所には作れないため，`pwd`で確認した作業中のローカルリポジトリ内(`<作業中のローカルリポジトリ>/.worktrees/`配下)とする．
 
-**clone先の基準に`pwd`の実行結果を使う理由:** `EnterWorktree`はセッションの作業ディレクトリを新しいworktree(`.claude/worktrees/<name>/`配下)に切り替えるが，実際に作られるディレクトリ名の変換規則(`name`の`/`がそのままか，ブランチ名同様`+`に置換されるか等)はツールの仕様として明記されていない．この変換規則を推測して`<プロジェクトルート>/.claude/worktrees/<name>/...`のようにパスを決め打ちすると，推測が外れた場合に存在しないパスを操作しようとして失敗する．`pwd`で都度確認すれば，対象リポジトリ自身の`EnterWorktree`を実行済みかどうか・実際のディレクトリ名がどうなっているかによらず，常に正しい現在地を基準にできる．上記のとおり対象リポジトリ自身の`EnterWorktree`を先に実行していれば，その後の`pwd`は自動的にそのworktree配下を指すため，`specification`の疑似隔離cloneも自動的にworktree内にネストする．対象リポジトリ自身が`EnterWorktree`を使わない場合(このセッションで`specification`のみが対象の場合)，`pwd`はこのセッションが起動した元のプロジェクトディレクトリを指す．
+**clone先の基準に`pwd`の実行結果を使う理由:** `specification`の疑似隔離を，対象リポジトリ自身の`EnterWorktree`のworktree内に作りたいためである．上記のとおり対象リポジトリ自身の`EnterWorktree`を先に実行していれば，`pwd`は自動的にそのworktree配下を指すため，`specification`の疑似隔離cloneも自動的にworktree内にネストする．
 
 ```
 pwd
-gh repo clone tt-and-tk/specification "<現在の作業ディレクトリ>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>"
-git -C "<現在の作業ディレクトリ>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
+gh repo clone tt-and-tk/specification "<作業中のローカルリポジトリ>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>"
+git -C "<作業中のローカルリポジトリ>/.worktrees/specification-fix-issue-<番号>-<内容を表す短い語句>" checkout -b fix/issue-<番号>-<内容を表す短い語句>
 ```
 
 各プロジェクトの`.gitignore`は`.worktrees/`を除外済みである前提とする(未対応の場合は別issueで一括対応する)．`EnterWorktree`のworktree配下にネストする場合も，そのworktreeは対象リポジトリと同じ内容をチェックアウトしているため，同じ`.gitignore`が有効である．
