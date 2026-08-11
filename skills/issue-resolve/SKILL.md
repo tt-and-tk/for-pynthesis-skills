@@ -230,7 +230,7 @@ git -C <specificationの既存のローカルディレクトリの絶対パス> 
 
 **対象リポジトリ自身の`EnterWorktree`と`specification`の疑似隔離を同一セッションで両方使った場合**，4.1の順序どおり`EnterWorktree`を先に実行していれば，疑似隔離のclone先はそのworktree配下にネストしている．この場合，`ExitWorktree`を先に実行するとworktreeごと疑似隔離のcloneも削除されるため，上記の`rm -rf`は不要になる(対象が既に存在せず空振りになる)．`ExitWorktree`を先に行う．
 
-**対象リポジトリが`for-pynthesis-skills`自身の場合**，上記に加えて以下を実行し，インストール済みプラグインを最新化する(反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える)．
+**対象リポジトリ(修正対象のリポジトリ)が`for-pynthesis-skills`自身の場合**，上記に加えて以下を実行し，インストール済みプラグインを最新化する(反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える)．**手順4冒頭の「影響リポジトリがspecification単独の場合」に該当するケースでは，作業ディレクトリが`for-pynthesis-skills`のローカルリポジトリであっても，修正対象は`specification`でありこの条件には当てはまらない．**下記のプラグイン更新は行わない．
 
 ```
 claude plugin marketplace update for-pynthesis-skills
