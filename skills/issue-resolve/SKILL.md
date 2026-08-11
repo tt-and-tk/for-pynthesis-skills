@@ -53,6 +53,8 @@ claude -p [--add-dir <別リポジトリのパス>...] -- "issue #<番号>(<owne
 
 **例外(`specification`):** `specification`リポジトリはClaude Codeプロジェクトを持たない(非プロジェクトという既存設計のため)ため，串刺し禁止ルールの対象外とする．影響リポジトリに`specification`が含まれる場合，`specification`に対しては現在のセッションから直接ブランチ作成・ファイル操作・PR作成を行ってよい(別セッションへの依頼は不要)．`specification`以外の複数リポジトリにまたがる場合は，それらの間では引き続き串刺し禁止ルールが適用される．
 
+**影響リポジトリが`specification`単独の場合の実行主体:** `specification`はClaude Codeプロジェクトを持たないため実行主体として選べない．この場合，`for-pynthesis-skills`(全リポジトリに影響するissueの受け皿を兼ねる)のプロジェクトから本スキルを実行する．ここでの`for-pynthesis-skills`はセッションを開く場所(実行主体)であり，修正対象(`specification`)とは別物である．他に対象リポジトリがなく`for-pynthesis-skills`自体も修正対象ではないため，4.1の`EnterWorktree`は行わない．4.1のclone先は`pwd`で確認した作業中のローカルリポジトリ内(`<作業中のローカルリポジトリ>/.worktrees/`配下)とする規定になっているが，この場合`pwd`はセッション開始時点の`for-pynthesis-skills`のローカルリポジトリを指すため，追加の準備なしにそのまま適用できる(`EnterWorktree`によるネストを介さない点のみ通常のケースと異なる)．
+
 ### 4.1 作業場所の準備
 
 `EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**別途`git checkout -b`でブランチを作る必要はない**．**対象リポジトリと`specification`の両方がこのセッションでの対象になる場合(下記)，`specification`を直接cloneする作業より先にこの`EnterWorktree`を実行する．** 順序を誤ると，先にcloneした`specification`の作業ディレクトリが，後から実行する`EnterWorktree`による隔離範囲の外側になり，以降のgit操作がブロックされる．
