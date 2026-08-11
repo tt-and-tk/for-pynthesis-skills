@@ -53,6 +53,8 @@ claude -p [--add-dir <別リポジトリのパス>...] -- "issue #<番号>(<owne
 
 **例外(`specification`):** `specification`リポジトリはClaude Codeプロジェクトを持たない(非プロジェクトという既存設計のため)ため，串刺し禁止ルールの対象外とする．影響リポジトリに`specification`が含まれる場合，`specification`に対しては現在のセッションから直接ブランチ作成・ファイル操作・PR作成を行ってよい(別セッションへの依頼は不要)．`specification`以外の複数リポジトリにまたがる場合は，それらの間では引き続き串刺し禁止ルールが適用される．
 
+**影響リポジトリが`specification`単独の場合の実行主体:** `specification`はClaude Codeプロジェクトを持たないため実行主体として選べない．この場合，`for-pynthesis-skills`(全リポジトリに影響するissueの受け皿を兼ねる)のプロジェクトから本スキルを実行する．ここでの`for-pynthesis-skills`はセッションを開く場所(実行主体)であり，修正対象(`specification`)とは別物である．他に対象リポジトリがなく`for-pynthesis-skills`自体も修正対象ではないため，4.1の`EnterWorktree`は行わない．`specification`自体への実際の作業は，通常のケースと同じく4.1の疑似隔離(clone)を用いる．4.1のclone先は`pwd`で確認した作業中のローカルリポジトリ内(`<作業中のローカルリポジトリ>/.worktrees/`配下)とする規定になっているが，この場合`pwd`はセッション開始時点の`for-pynthesis-skills`のローカルリポジトリを指すため，追加の準備なしにそのまま適用できる(`EnterWorktree`によるネストを介さない点のみ通常のケースと異なる)．
+
 ### 4.1 作業場所の準備
 
 `EnterWorktree`(name: `fix/issue-<番号>-<内容を表す短い語句>`)で専用の作業ディレクトリとブランチを作成してから作業する．`EnterWorktree`はブランチ作成まで一体で行うため，**別途`git checkout -b`でブランチを作る必要はない**．**対象リポジトリと`specification`の両方がこのセッションでの対象になる場合(下記)，`specification`を直接cloneする作業より先にこの`EnterWorktree`を実行する．** 順序を誤ると，先にcloneした`specification`の作業ディレクトリが，後から実行する`EnterWorktree`による隔離範囲の外側になり，以降のgit操作がブロックされる．
@@ -228,7 +230,7 @@ git -C <specificationの既存のローカルディレクトリの絶対パス> 
 
 **対象リポジトリ自身の`EnterWorktree`と`specification`の疑似隔離を同一セッションで両方使った場合**，4.1の順序どおり`EnterWorktree`を先に実行していれば，疑似隔離のclone先はそのworktree配下にネストしている．この場合，`ExitWorktree`を先に実行するとworktreeごと疑似隔離のcloneも削除されるため，上記の`rm -rf`は不要になる(対象が既に存在せず空振りになる)．`ExitWorktree`を先に行う．
 
-**対象リポジトリが`for-pynthesis-skills`自身の場合**，上記に加えて以下を実行し，インストール済みプラグインを最新化する(反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える)．
+**対象リポジトリ(修正対象のリポジトリ)が`for-pynthesis-skills`自身の場合**，上記に加えて以下を実行し，インストール済みプラグインを最新化する(反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える)．**手順4冒頭の「影響リポジトリがspecification単独の場合」に該当するケースでは，作業ディレクトリが`for-pynthesis-skills`のローカルリポジトリであっても，修正対象は`specification`でありこの条件には当てはまらない．**下記のプラグイン更新は行わない．
 
 ```
 claude plugin marketplace update for-pynthesis-skills
