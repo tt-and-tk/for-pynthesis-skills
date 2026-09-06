@@ -151,7 +151,7 @@ claude plugin update for-pynthesis-skills@for-pynthesis-skills
 
 # レビュー指摘への向き合い方
 
-`issue-resolve`スキルの`SKILL.md`にある同名の節に従う．手順番号は本スキルのもの(4-4・4-5)に読み替える．
+`issue-resolve`スキルの`SKILL.md`にある同名の節に従う．参照先が手順番号で指している箇所は，本スキルの対応する手順に読み替える．
 
 # 注意
 
