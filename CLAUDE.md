@@ -36,7 +36,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **複製**: 次の記述は，該当するスキルの`SKILL.md`で一字一句同一の内容に保ち，一部のスキルだけを修正しない(見出し行のレベルは各ファイルの階層に合わせるため一致しなくてよく，同一に保つのは見出し配下の本文である)．いずれもスキルを実行している最中に常時従う規律であり，参照にすると読み手が別のスキルを開くまで守るべきことが分からないため複製する
     - 「コマンド実行の規定」(`issue-create`・`issue-resolve`・`cross-project-edit`)
-    - 「レビュー指摘への向き合い方」と，修正方針の承認を行う手順(`issue-resolve`・`cross-project-edit`)
+    - 「修正方針の承認」の手順と「レビュー指摘への向き合い方」の節(`issue-resolve`・`cross-project-edit`)
 - **参照**: 自動レビューの規定は，`issue-resolve`の`SKILL.md`にある「自動レビューループ」の節を唯一の出典とし，`cross-project-edit`はそこを参照した上で固有の差分だけを持つ．観点や実施条件は追加・変更が続くため，複製すると追随漏れが生じる
 
 ## プラグイン内容変更後の更新
