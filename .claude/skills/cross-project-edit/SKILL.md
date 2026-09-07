@@ -149,6 +149,8 @@ claude plugin marketplace update for-pynthesis-skills
 claude plugin update for-pynthesis-skills@for-pynthesis-skills
 ```
 
+4-4で控えた既存不具合の提示は，4-4の参照先が定める手順6の規定に従う(複数リポジトリを扱った場合は，リポジトリをまたいで1つの一覧にまとめる)．
+
 # レビュー指摘への向き合い方
 
 `issue-resolve`スキルの`SKILL.md`にある同名の節に従う．参照先が手順番号で指している箇所は，本スキルの対応する手順に読み替える．
