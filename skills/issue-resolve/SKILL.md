@@ -293,7 +293,7 @@ AIレビュー(`claude -p`)・人間レビューのいずれであっても，�
 指摘された箇所へのインラインコメントは以下で作成する．
 
 ```
-GH_TOKEN=$(cat ~/.gh-bot-token) gh api repos/tt-and-tk/<repo>/pulls/<PR番号>/comments -f body="<対応内容>" -f commit_id=<対応したコミットの40桁のSHA> -f path=<ファイルパス> -F line=<行番号> -f side=RIGHT
+GH_TOKEN=$(cat ~/.gh-bot-token) gh api repos/tt-and-tk/<repo>/pulls/<PR番号>/comments -f body="<上記の書式で書いた対応内容>" -f commit_id=<対応したコミットの40桁のSHA> -f path=<ファイルパス> -F line=<行番号> -f side=RIGHT
 ```
 
 `commit_id`には，**そのPRのブランチにpush済みのコミットの，40桁の完全なSHA**を指定する．そのPRに含まれないコミットを指すと受け付けられないため，pushは必須である．SHAの桁数について公式に規定されているわけではないが，完全な形であれば確実に通るため，短縮形は使わない．指摘ごとにコミットを分けている以上，指摘の数だけ異なるSHAが必要になるため，各コミットの直後にそのSHAを控えておく．
