@@ -51,4 +51,4 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
 ## 含まれるスキル
 
 - `issue-create`: 課題や要望をGitHub issueとして起票する
-- `issue-resolve`: GitHub issueに対応する(調査・ブランチ作成・修正・PR作成)．1issue=1回の実行が単位
+- `issue-resolve`: GitHub issueに対応する(調査・ブランチ作成・修正・PR作成)．1issue=1回の実行が単位．複数リポジトリに及ぶissueは，`for-pynthesis-skills`のプロジェクトから実行すれば1セッションでまとめて対応できる
