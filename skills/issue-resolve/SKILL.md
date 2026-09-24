@@ -101,7 +101,7 @@ gh pr create --repo tt-and-tk/<repo> --title "<タイトル>" --body "<本文>" 
 
 push先は，ブランチ名を書かず`HEAD`で現在のブランチを指す(`EnterWorktree`が作るブランチ名は`name`と一致しないため，名前を書くと存在しない別のブランチを新規に作ってしまう)．
 
-PR作成時の`--body`に，closeキーワード (`Closes tt-and-tk/<repo>#番号`) またはリンクのみ (`Related to tt-and-tk/<repo>#番号`) を含める．closeキーワードは1issueにつき1箇所のPRのみに付与する (issueが存在するリポジトリのPR，またはユーザーが指定したPR．issueが存在するリポジトリにPRを作らない場合は付与先が無くissueが閉じないため，手順3の方針提示時にどのPRに付与するかをユーザーに確認しておく)．それ以外のリポジトリのPRは`Related to tt-and-tk/<repo>#番号`のみを記載する．  
+PR作成時の`--body`に，closeキーワード (`Closes tt-and-tk/<repo>#番号`) またはリンクのみ (`Related to tt-and-tk/<repo>#番号`) を含める．closeキーワードは1issueにつき1箇所のPRのみに付与する (issueが存在するリポジトリのPR，またはユーザーが指定したPR．issueが存在するリポジトリにPRを作らない場合は既定の付与先が無いため，手順3の方針提示時にどのPRに付与するかをユーザーに確認しておく)．それ以外のリポジトリのPRは`Related to tt-and-tk/<repo>#番号`のみを記載する．  
 
 **`--draft`は，closeキーワードを持つPRにのみ付ける．** マージするとissueが閉じるPRであることを一目で分かるようにするための運用．closeキーワードを持たない(`Related to`のみの)PRはissueを閉じないため，通常のPR(Ready)として作成する．  
 
