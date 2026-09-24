@@ -1,6 +1,6 @@
 # for-pynthesis-skills
 
-Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有する，GitHub issueの起票・対応を支援するClaude Codeスキル集(プラグイン)．
+Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有する，GitHub issueの起票・対応を支援するClaude Codeスキル集と，共通のコーディング規約を提供するプラグイン．
 
 ## 導入手順
 
