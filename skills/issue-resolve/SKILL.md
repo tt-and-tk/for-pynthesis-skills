@@ -1,6 +1,6 @@
 ---
 name: issue-resolve
-description: GitHub issueに対応する。1issue=1回の実行。「issue #Nに対応して」で起動。複数リポジトリに及ぶissueも，for-pynthesis-skillsのプロジェクトから実行すれば1セッションでまとめて対応できる。
+description: GitHub issueに対応する。1issue=1回の実行。「issue #Nに対応して」で起動。
 ---
 
 # 概要
