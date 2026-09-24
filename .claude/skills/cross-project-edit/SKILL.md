@@ -113,11 +113,11 @@ gh api --paginate repos/tt-and-tk/<リポジトリ名>/pulls/<PR番号>/comments
 gh api --paginate repos/tt-and-tk/<リポジトリ名>/issues/<PR番号>/comments
 ```
 
-指摘一つずつについて，該当コメントへの返信で対応内容を伝える(必須)．インラインのレビューコメントにはスレッド返信，PR全体へのコメントには通常のコメントで返信するため，以下は該当する側のみ実行する．自動レビューが投稿するこれらのコメントは，人間の投稿と区別できるよう，`GH_TOKEN`環境変数でbotアカウントのトークン(`~/.gh-bot-token`)を明示してその1コマンドの実行時だけ切り替える(コミット・push・PR作成には適用せず，従来どおりの既定認証(人間のアカウント)を使う)．
+指摘一つずつについて，該当コメントへの返信で対応内容を伝える(必須)．インラインのレビューコメントにはスレッド返信，PR全体へのコメントには通常のコメントで返信するため，以下は該当する側のみ実行する．これらのコメントも，参照先の規定どおり本文の1行目を目印`🤖 自動投稿`として人間の投稿と区別する．
 
 ```
-GH_TOKEN=$(cat ~/.gh-bot-token) gh api repos/tt-and-tk/<リポジトリ名>/pulls/<PR番号>/comments/<コメントID>/replies -f body="<対応内容>"
-GH_TOKEN=$(cat ~/.gh-bot-token) gh pr comment <PR番号> --repo tt-and-tk/<リポジトリ名> --body "<対応内容>"
+gh api repos/tt-and-tk/<リポジトリ名>/pulls/<PR番号>/comments/<コメントID>/replies -f body="🤖 自動投稿<改行><対応内容>"
+gh pr comment <PR番号> --repo tt-and-tk/<リポジトリ名> --body "🤖 自動投稿<改行><対応内容>"
 ```
 
 対応後は4-4の自動レビューを再実行する(どの観点をどれだけ回すかは4-4の参照先が定める実施条件に従う)．
