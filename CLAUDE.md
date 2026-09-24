@@ -16,12 +16,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 | リポジトリ(GitHub) | ディレクトリ(`pc/`配下) | 役割 |
 |:-|:-|:-|
-| `specification` | `specification/` | CPUアーキテクチャ・ISA・アセンブリ言語・コンパイラ・Qosmosの仕様のドキュメント(唯一の一次情報源．Claude Codeプロジェクトを持たない) |
-| `pyntaxis` | `assembler/` | 自作アセンブリ言語Pyntaxis(`.pt`) → SystemVerilog ROM(`.sv`)へのアセンブラ |
-| `pynesis` | `compiler/` | 自作プログラミング言語Pynesis(`.pn`) → アセンブリ言語Pyntaxisへのコンパイラ．`pyntaxis`のソースファイルをincludeして使用し，`.sv`まで一貫変換も可能 |
-| `qurge` | `mypc/` | CPU・メモリ・ROM等のハードウェア全体のVivadoプロジェクト(SystemVerilog + PS側C++) |
-| (専用のリポジトリなし．`qurge`内) | `mypc/mypc.srcs/pn/` | ROM上で動く自作OS Qosmos(シェルやファイルシステムなど)のPynesisソース．仕様は`specification`の`qosmos.md` |
-| `for-pynthesis-skills`(本リポジトリ) | `for-pynthesis-skills/` | 上記各リポジトリで共有するissue起票・対応支援スキルを提供する．特定のリポジトリが主担当と判断できない，全リポジトリに影響するissueの起票先(受け皿)でもある |
+| `specification` | `specification/` | CPUアーキテクチャ・ISA・アセンブリ言語・コンパイラ・Qosmosの仕様のドキュメント(Claude Codeプロジェクトを持たない) |
+| `pynesis` | `compiler/` | 独自言語Pynesis(`.pn`)をアセンブリ言語Pyntaxis(`.pt`)に変換するコンパイラ |
+| `pyntaxis` | `assembler/` | 自作アセンブリ言語Pyntaxis(`.pt`)をSystemVerilog ROM(`.sv`)に変換するアセンブラ |
+| `qurge` | `mypc/` | CPU・メモリ等を含むハードウェア一式のVivadoプロジェクト(ハードウェア実装)と，ROM上で動く自作OS Qosmos(シェルやファイルシステムなど．Pynesisで記述) |
+| `for-pynthesis-skills`(本リポジトリ) | `for-pynthesis-skills/` | 上記各リポジトリで共有するissue起票・対応支援スキル(`issue-create`/`issue-resolve`)を提供する．自身はハードウェア・OS・コンパイラ・アセンブラのソースを持たない．特定のリポジトリが主担当と判断できない，全リポジトリに影響するissueの起票先(受け皿)も兼ねる |
 
 ## 含まれるスキル
 
