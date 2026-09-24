@@ -1,8 +1,10 @@
 # for-pynthesis-skills
 
-Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有する，GitHub issueの起票・対応を支援するClaude Codeスキル集(プラグイン)．
+Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有する，GitHub issueの起票・対応を支援するClaude Codeスキル集と，共通のコーディング規約を提供するプラグイン．
 
 ## 導入手順
+
+ローカルのClaude Codeでは次の手順で導入する．Claude Code on the web(クラウド)のセッションは`.claude/settings.json`のマーケットプレイスとプラグインの設定を読まないため，代わりにclaude.aiのアカウントでプラグインを有効にする(有効にしたプラグインはクラウドのセッションに同期される)．
 
 1. 利用したいプロジェクトの`.claude/settings.json`に，マーケットプレイスとプラグインの有効化を記載する．
 
@@ -48,7 +50,13 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
 
    デフォルトのスコープは`user`(導入手順で推奨したスコープと一致)．`project`/`local`スコープで導入した場合は`--scope`で指定する．反映にはClaude Codeの再起動が必要．
 
-## 含まれるスキル
+## 含まれる内容
+
+### スキル
 
 - `issue-create`: 課題や要望をGitHub issueとして起票する
 - `issue-resolve`: GitHub issueに対応する(調査・ブランチ作成・修正・PR作成)．1issue=1回の実行が単位
+
+### コーディング規約
+
+`coding-conventions.md`に，文章・コメントの書き方や情報の残し方などのコーディング規約を持つ．プラグインのSessionStartフック(`hooks/hooks.json`)が，再開(resume)を除くセッションの開始時などにその内容を出力し，文脈に読み込ませる(再開したセッションは，以前に読み込んだ規約を会話の履歴として引き継ぐため)．`claude -p`で起動したセッションにも読み込まれるため，`issue-resolve`のコーディング規約レビューのレビュアーもこの規約を参照する．規約を変えるときは`coding-conventions.md`だけを直せばよい．
