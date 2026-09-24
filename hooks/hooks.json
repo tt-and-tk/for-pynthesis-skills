@@ -9,6 +9,14 @@
             "command": "cat \"${CLAUDE_PLUGIN_ROOT}/coding-conventions.md\""
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -z \"$GH_BOT_TOKEN\" ] || (umask 077; printf '%s' \"$GH_BOT_TOKEN\" > ~/.gh-bot-token)"
+          }
+        ]
       }
     ]
   }
