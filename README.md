@@ -59,4 +59,4 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
 
 ### コーディング規約
 
-`coding-conventions.md`に，文章・コメントの書き方や情報の残し方などのコーディング規約を持つ．プラグインのSessionStartフック(`hooks/hooks.json`)がセッションの開始時などにその内容を出力し，文脈に読み込ませる．`claude -p`で起動したセッションにも読み込まれるため，`issue-resolve`のコーディング規約レビューのレビュアーもこの規約を参照する．規約を変えるときは`coding-conventions.md`だけを直せばよい．
+`coding-conventions.md`に，文章・コメントの書き方や情報の残し方などのコーディング規約を持つ．プラグインのSessionStartフック(`hooks/hooks.json`)がセッションの開始時などにその内容を出力し，文脈に読み込ませる．再開(resume)したセッションには出力しない．復元した履歴に規約が残っており，二重に読み込まれるためである．`claude -p`で起動したセッションにも読み込まれるため，`issue-resolve`のコーディング規約レビューのレビュアーもこの規約を参照する．規約を変えるときは`coding-conventions.md`だけを直せばよい．
