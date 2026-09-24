@@ -16,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 | リポジトリ(GitHub) | ディレクトリ(`pc/`配下) | 役割 |
 |:-|:-|:-|
-| `specification` | `specification/` | CPUアーキテクチャ・ISA・アセンブリ言語・コンパイラ仕様のドキュメント(Claude Codeプロジェクトを持たない) |
+| `specification` | `specification/` | CPUアーキテクチャ・ISA・アセンブリ言語・コンパイラ・Qosmosの仕様のドキュメント(Claude Codeプロジェクトを持たない) |
 | `pynesis` | `compiler/` | 独自言語Pynesis(`.pn`)をアセンブリ言語Pyntaxis(`.pt`)に変換するコンパイラ |
 | `pyntaxis` | `assembler/` | 自作アセンブリ言語Pyntaxis(`.pt`)をSystemVerilog ROM(`.sv`)に変換するアセンブラ |
 | `qurge` | `mypc/` | CPU・メモリ等を含むハードウェア一式のVivadoプロジェクト(ハードウェア実装)と，ROM上で動く自作OS Qosmos(シェルやファイルシステムなど．Pynesisで記述) |
