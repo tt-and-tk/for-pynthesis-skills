@@ -4,6 +4,8 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
 
 ## 導入手順
 
+ローカルのClaude Codeでは次の手順で導入する．Claude Code on the web(クラウド)のセッションは`.claude/settings.json`のマーケットプレイスとプラグインの設定を読まないため，代わりにclaude.aiのアカウントでプラグインを有効にする(有効にしたプラグインはクラウドのセッションに同期される)．
+
 1. 利用したいプロジェクトの`.claude/settings.json`に，マーケットプレイスとプラグインの有効化を記載する．
 
    ```json
@@ -29,8 +31,6 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
    - `user`: ユーザーホーム配下の`~/.claude/settings.json`に登録される．どのプロジェクトのリポジトリにも属さない設定のため，一度実行すれば，以降は別プロジェクト・別セッションでも再インストール不要．**複数プロジェクトで共有利用する本プラグインでは，このスコープでの導入を推奨する**
    - `project`: リポジトリ直下の`.claude/settings.json`に登録される．このファイルはリポジトリにコミットされる想定のため，クローンした他のメンバーにも共有される
    - `local`: リポジトリ直下の`.claude/settings.local.json`に登録される．このファイルは通常`.gitignore`で除外されリポジトリにコミットされないため，自分のローカル環境限定になる
-
-Claude Code on the web(クラウド)のセッションは，リポジトリの`.claude/settings.json`に書いたマーケットプレイスとプラグインの設定を読まない．クラウドで使う場合は，claude.aiのアカウントでプラグインを有効にする．有効にしたプラグインはクラウドのセッションに同期されて読み込まれる．
 
 ## 更新手順
 
