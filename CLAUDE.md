@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 このリポジトリ(GitHubリポジトリ名: `tt-and-tk/for-pynthesis-skills`)は，自作PCプロジェクト全体で使う，GitHub issueの起票・対応を支援するClaude Codeスキル集と，共通のコーディング規約をプラグインとして提供する．
 
-自作PCプロジェクトは，PYNQ-Z2上に実装する自作CPUを含むハードウェア一式と，それを動かすソフトウェア群(コンパイラ・アセンブラ)から成り，複数の独立したGitHubリポジトリで構成される．
+自作PCプロジェクトは，PYNQ-Z2上に実装する自作CPUを含むハードウェア一式と，それを動かすソフトウェア群(コンパイラ・アセンブラ・OS)から成り，複数の独立したGitHubリポジトリで構成される．
 
 ```
 入力(独自言語Pynesis, .pn) → [コンパイラ] → アセンブリ(自作アセンブリ言語Pyntaxis, .pt) → [アセンブラ] → SystemVerilog ROM(.sv) → [Vivado] → PYNQ-Z2上のハードウェア(qurgeから合成)
@@ -16,32 +16,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 | リポジトリ(GitHub) | ディレクトリ(`pc/`配下) | 役割 |
 |:-|:-|:-|
-| `specification` | `specification/` | CPUアーキテクチャ・ISA・アセンブリ言語・コンパイラ仕様のドキュメント(Claude Codeプロジェクトを持たない) |
+| `specification` | `specification/` | CPUアーキテクチャ・ISA・アセンブリ言語・コンパイラ・Qosmosの仕様のドキュメント(Claude Codeプロジェクトを持たない) |
 | `pynesis` | `compiler/` | 独自言語Pynesis(`.pn`)をアセンブリ言語Pyntaxis(`.pt`)に変換するコンパイラ |
-| `pyntaxis` | `assembler/` | 自作アセンブリ言語Pyntaxis(`.pt`)をSystemVerilog ROM(`.sv`)に変換するアセンブラ |
-| `qurge` | `mypc/` | CPU・メモリ等を含むハードウェア一式のVivadoプロジェクト(ハードウェア実装) |
-| `for-pynthesis-skills`(本リポジトリ) | `for-pynthesis-skills/` | 上記各リポジトリで共有するissue起票・対応支援スキル(`issue-create`/`issue-resolve`)とコーディング規約を提供する．自身はハードウェア・コンパイラ・アセンブラのソースを持たない．特定のリポジトリが主担当と判断できない，全リポジトリに影響するissueの起票先(受け皿)も兼ねる |
+| `pyntaxis` | `assembler/` | 自作アセンブリ言語Pyntaxis(`.pt`)をSystemVerilog ROM(`.sv`)，または自作OS Qosmosの実行ファイルに変換するアセンブラ |
+| `qurge` | `mypc/` | CPU・メモリ等を含むハードウェア一式のVivadoプロジェクト(ハードウェア実装)と，ROM上で動く自作OS Qosmos(シェルやファイルシステムなど．Pynesisで記述) |
+| `for-pynthesis-skills`(本リポジトリ) | `for-pynthesis-skills/` | 上記各リポジトリで共有するissue起票・対応支援スキル(`issue-create`/`issue-resolve`)とコーディング規約を提供する．自身はハードウェア・OS・コンパイラ・アセンブラのソースを持たない．特定のリポジトリが主担当と判断できない，全リポジトリに影響するissueの起票先(受け皿)も兼ねる |
 
 ## 含まれる内容
 
 スキルとコーディング規約の一覧・仕組みは`README.md`を参照．コーディング規約の本文は`coding-conventions.md`だけが持つため，規約を変えるときはこのファイルだけを直す．
 
-## 本リポジトリ専用のスキル(プラグイン非配布)
-
-`.claude/skills/cross-project-edit`: 複数プロジェクトに横断的に影響する修正を1issue・1セッションでまとめて行うスキル．`for-pynthesis-skills`の`.claude`ディレクトリにのみ配置し，プラグインとして他プロジェクトには配布しない．
-
 ## スキル間で共有する記述
 
-スキルは個別に読み込まれ共通ファイルを参照できないため，複数のスキルで共有する記述は，複製するか参照するかのどちらかになる．どちらを採るかは記述ごとに次のとおり定める．
+スキルは個別に読み込まれ共通ファイルを参照できないため，複数のスキルで共有する記述は各スキルの`SKILL.md`に複製することになり，片方だけを直して乖離しやすい．そのためissue対応の手順は，影響リポジトリが1つか複数かによらず`issue-resolve`1つにまとめ，手順の一部を共有する別のスキルを設けない．
 
-- **複製**: 次の記述は，該当するスキルの`SKILL.md`で一字一句同一の内容に保ち，一部のスキルだけを修正しない(見出し行のレベルは各ファイルの階層に合わせるため一致しなくてよく，同一に保つのは見出し配下の本文である)．いずれもスキルを実行している最中に常時従う規律であり，参照にすると読み手が別のスキルを開くまで守るべきことが分からないため複製する
-    - 「コマンド実行の規定」(`issue-create`・`issue-resolve`・`cross-project-edit`)
-    - 「3. 修正方針の承認」の節(`issue-resolve`・`cross-project-edit`)
-- **参照**: 自動レビューの規定(`issue-resolve`の`SKILL.md`にある「自動レビューループ」の節)と，「レビュー指摘への向き合い方」の節は，`issue-resolve`を唯一の出典とし，`cross-project-edit`はそこを参照した上で固有の差分だけを持つ．いずれも観点や運用の追加・変更が続くため，複製すると追随漏れが生じる
+複製するのは「コマンド実行の規定」(`issue-create`・`issue-resolve`)だけとし，両スキルの`SKILL.md`で一字一句同一の内容に保ち，片方だけを修正しない(見出し行のレベルは各ファイルの階層に合わせるため一致しなくてよく，同一に保つのは見出し配下の本文である)．スキルを実行している最中に常時従う規律であり，参照にすると読み手が別のスキルを開くまで守るべきことが分からないため，参照ではなく複製する．
 
 ## プラグイン内容変更後の更新
 
-このリポジトリの内容(スキル等)を変更するPRがマージされたら，`issue-resolve`・`cross-project-edit`いずれの後片付け手順の一環としても，以下を実行してインストール済みプラグインを最新化する．
+このリポジトリの内容(スキル等)を変更するPRがマージされたら，`issue-resolve`の後片付け手順の一環として，以下を実行してインストール済みプラグインを最新化する．
 
 ```
 claude plugin marketplace update for-pynthesis-skills
