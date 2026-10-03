@@ -10,7 +10,7 @@
       "name": "for-pynthesis-skills",
       "source": "./",
       "category": "productivity",
-      "description": "Pynthesisプロジェクト群(specification/pyntaxis/qurge/pynesis)で共有するissue管理スキル"
+      "description": "Pynthesisプロジェクト群(specification/pyntaxis/qurge/pynesis)で共有するissue管理スキルとコーディング規約"
     }
   ]
 }
