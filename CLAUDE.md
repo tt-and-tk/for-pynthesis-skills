@@ -24,7 +24,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 含まれる内容
 
-スキルとコーディング規約の一覧・仕組みは`README.md`を参照．
+スキルとコーディング規約の一覧・仕組みは`README.md`を参照．コーディング規約の本文は`coding-conventions.md`だけが持つため，規約を変えるときはこのファイルだけを直す．
 
 ## 本リポジトリ専用のスキル(プラグイン非配布)
 
