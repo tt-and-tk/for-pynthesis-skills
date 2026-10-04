@@ -38,7 +38,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```
 claude plugin marketplace update for-pynthesis-skills
-claude plugin update for-pynthesis-skills@for-pynthesis-skills
+claude plugin update for-pynthesis-skills@for-pynthesis-skills --scope user
 ```
 
 反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える．

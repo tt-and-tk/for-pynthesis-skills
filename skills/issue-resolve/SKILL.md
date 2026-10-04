@@ -284,7 +284,7 @@ git -C <既存のローカルディレクトリの絶対パス> pull
 
 ```
 claude plugin marketplace update for-pynthesis-skills
-claude plugin update for-pynthesis-skills@for-pynthesis-skills
+claude plugin update for-pynthesis-skills@for-pynthesis-skills --scope user
 ```
 
 後始末の完了報告にあわせて，次のものをユーザーに提示する．いずれも会話の圧縮で失われないよう，各PRのコメントを4.5のコマンドで取得し直して作り，該当するものが無ければ提示しない．起票するかどうかはユーザーが判断し，起票には`issue-create`スキルを用いる．
