@@ -46,7 +46,7 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
    claude plugin update for-pynthesis-skills@for-pynthesis-skills --scope user
    ```
 
-   `--scope`を省略すると，実行したディレクトリに`local`・`project`スコープの登録があればそちらだけが更新され，`user`スコープは古い版のまま残る．`user`スコープで導入した場合(推奨)，セッションに読み込まれるのは`user`スコープの版であるため，`--scope user`を指定する．`project`/`local`スコープで導入した場合は，そのスコープを`--scope`で指定する．反映にはClaude Codeの再起動が必要．
+   `--scope`を省略すると，実行したディレクトリに`local`・`project`スコープの登録があればそちらだけが更新され，`user`スコープは古い版のまま残る．`user`スコープで導入した場合(推奨)，セッションに読み込まれるのは`user`スコープの版であるため，`--scope user`を指定する．`local`・`project`スコープで導入した場合は，そのスコープを`--scope`で指定する．反映にはClaude Codeの再起動が必要．
 
    `user`スコープで導入していても，Claude Codeを起動したディレクトリ(worktreeを含む)ごとに`project`スコープの登録が作られ，`claude plugin list`に版の異なる登録として並ぶ．これらの版は読み込まれないため，更新も削除も不要である(`claude plugin uninstall --scope project`は，コミット対象の`.claude/settings.json`から`enabledPlugins`の記載まで消してしまうため使わない)．
 
