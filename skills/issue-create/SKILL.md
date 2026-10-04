@@ -34,7 +34,7 @@ description: 課題や要望をGitHub issueとして起票する。「issue作�
    - 複数リポジトリにまたがる可能性がある場合は，1つのissueで複数リポジトリをまとめて扱うか，リポジトリごとに分けるかをユーザーに確認する
    - 特定のリポジトリが主担当と判断できない，全リポジトリに影響する内容の場合は`for-pynthesis-skills`リポジトリに起票する(複数リポジトリに影響する場合でも，メインで修正するリポジトリが決まっているならそちらに起票する)
 4. タイトル・本文・付与するラベルを提示し，承認を得てから作成する (GitHub上に公開される操作のため，作成前に必ず確認する)
-5. `gh api repos/<owner>/<repo>/issues -f title="<タイトル>" -f body="<本文>" -f "labels[]=<ラベル>" --jq .html_url` で作成する．`gh issue create`は内部でGraphQL APIを使い，GraphQLへの通信が拒否されるClaude Code on the web(クラウド)のセッションでは失敗するため使わない
+5. `gh api repos/<owner>/<repo>/issues -f title="<タイトル>" -f body="<本文>" -f "labels[]=<ラベル>" --jq .html_url` で作成する
 6. 出力された作成済みissueのURLを報告する
 
 ## 注意
