@@ -7,8 +7,6 @@ description: GitHub issueに対応する。1issue=1回の実行。「issue #Nに
 
 GitHub issueへの対応 (調査・ブランチ作成・修正・PR作成) を行う．粒度は1issue=1回の実行．
 
-GitHubのissue・PRの操作は，`gh issue`・`gh pr`などのサブコマンドではなく`gh api`によるREST APIの呼び出しで行い，出力は`--jq`で必要な項目に絞る．それらのサブコマンドは内部でGraphQL APIを使うため，GraphQLへの通信が拒否されるClaude Code on the web(クラウド)のセッションでは失敗する．
-
 # コマンド実行の規定
 
 この規定は，スキル本文に記載されたコマンドの実行と，手順を進める中で実行側が自分で組み立てるコマンドの両方に適用する．
