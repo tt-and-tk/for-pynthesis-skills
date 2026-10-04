@@ -34,11 +34,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プラグイン内容変更後の更新
 
-このリポジトリの内容(スキル等)を変更するPRがマージされたら，`issue-resolve`の後片付け手順の一環として，以下を実行してインストール済みプラグインを最新化する．
+このリポジトリの内容(スキル等)を変更するPRがマージされたら，`issue-resolve`の後片付け手順の一環として，以下を実行して`user`スコープに導入したプラグインを最新化する．`user`以外のスコープで導入した環境では，`--scope`にそのスコープを指定する(`README.md`の「更新手順」を参照)．
 
 ```
 claude plugin marketplace update for-pynthesis-skills
-claude plugin update for-pynthesis-skills@for-pynthesis-skills
+claude plugin update for-pynthesis-skills@for-pynthesis-skills --scope user
 ```
 
 反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える．
