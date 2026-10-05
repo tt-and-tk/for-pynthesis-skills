@@ -30,7 +30,7 @@ GitHub issueへの対応 (調査・ブランチ作成・修正・PR作成) を�
 
 ```
 gh api repos/tt-and-tk/<repo>/issues/<番号> --jq '{title, state, labels: [.labels[].name], body}'
-gh api --paginate repos/tt-and-tk/<repo>/issues/<番号>/comments --jq '.[] | {user: .user.login, created_at, body}'
+gh api --paginate repos/tt-and-tk/<repo>/issues/<番号>/comments --jq '.[] | {created_at, body}'
 ```
 
 本文とコメント，あるいはコメント同士で内容が食い違う場合は，新しいコメントを優先する．ただし本文はコメントの後に編集されている場合があり，その編集日時は取得できないため，本文と新しいコメントのどちらが最新の意図か判断できない場合は手順3の方針提示でユーザーに確認する．
