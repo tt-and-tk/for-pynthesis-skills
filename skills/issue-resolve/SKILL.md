@@ -265,10 +265,32 @@ gh api repos/tt-and-tk/<repo>/issues/<PR番号>/comments -f body="🤖 自動投
 gh api repos/tt-and-tk/<repo>/issues/<番号> --jq .state
 ```
 
-**`EnterWorktree`で作業した場合**(4.1)，`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．Vivadoプロジェクトを含むリポジトリでは，Git管理外の合成の中間生成物も一緒に消える(実機での確認はマージ前に済んでいるため支障はない)．その後，マージされた内容を元のローカルリポジトリに反映するため，以下を実行する．
+**`EnterWorktree`で作業した場合**(4.1)，`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．Vivadoプロジェクトを含むリポジトリでは，Git管理外の合成の中間生成物も一緒に消える(実機での確認はマージ前に済んでいるため支障はない)．
+
+`ExitWorktree`が削除するのは，そのセッションが`EnterWorktree`で新しく作成したworktreeだけである．セッションの再開を挟んだ場合など，`ExitWorktree`(`remove`)でworktreeが削除されなかった場合は，`ExitWorktree`(`keep`)で元のディレクトリへ戻り(既に戻っていれば何も起きない)，以下でworktreeを削除する．`git worktree list`の出力のうち，作業ブランチ(`worktree-fix+issue-<番号>-<内容を表す短い語句>`)の行に表示されるパスがworktreeのパスである．
+
+```
+git worktree list
+git worktree remove "<worktreeのパス>"
+```
+
+`git worktree remove`は，worktreeに未コミットの変更や追跡外のファイルが残っていると失敗する．その場合は，以下の1行目で残っている内容をユーザーに提示し，承認を得てから2行目で削除する(残っている内容は失われる)．
+
+```
+git -C "<worktreeのパス>" status --short
+git worktree remove --force "<worktreeのパス>"
+```
+
+worktreeを削除したら，マージされた内容を元のローカルリポジトリに反映するため，以下を実行する．
 
 ```
 git pull
+```
+
+`git worktree remove`でworktreeを削除した場合はブランチが残るため，`git pull`の後に以下で削除する．未マージと判定されて失敗した場合は，ブランチを残したことをユーザーに伝える．
+
+```
+git branch -d <作業ブランチ名>
 ```
 
 **疑似隔離(4.1でclone)を使った場合**，cloneしたディレクトリを，疑似隔離で扱ったリポジトリごとに削除する(ローカルブランチもディレクトリごと削除される．そのリポジトリ本体のローカルクローンには一切触れないため，そちらのブランチ削除は不要)．
@@ -283,7 +305,7 @@ rm -rf <cloneしたディレクトリの絶対パス>
 git -C <既存のローカルディレクトリの絶対パス> pull
 ```
 
-**セッションのリポジトリの`EnterWorktree`と疑似隔離を同一セッションで両方使った場合**，4.1の順序どおり`EnterWorktree`を先に実行していれば，疑似隔離のclone先はそのworktree配下にネストしている．この場合，`ExitWorktree`を先に実行するとworktreeごと疑似隔離のcloneも削除されるため，上記の`rm -rf`は不要になる(対象が既に存在せず空振りになる)．`ExitWorktree`を先に行う．
+**セッションのリポジトリの`EnterWorktree`と疑似隔離を同一セッションで両方使った場合**，4.1の順序どおり`EnterWorktree`を先に実行していれば，疑似隔離のclone先はそのworktree配下にネストしている．この場合，worktreeを先に削除すると，`ExitWorktree`・`git worktree remove`のどちらで削除しても疑似隔離のcloneが一緒に削除されるため，上記の`rm -rf`は不要になる(対象が既に存在せず空振りになる)．worktreeの削除を先に行う．
 
 **修正対象のリポジトリに`for-pynthesis-skills`自身が含まれる場合**，上記に加えて以下を実行し，`user`スコープに導入したプラグインを最新化する．`user`以外のスコープで導入した環境では，`--scope`にそのスコープを指定する(`for-pynthesis-skills`リポジトリの`README.md`の「更新手順」を参照)．反映にはClaude Codeの再起動が必要なため，実行後はユーザーに再起動が必要な旨を伝える．**手順4冒頭の「セッションのリポジトリが修正対象に含まれない場合」に該当するケースでは，作業ディレクトリが`for-pynthesis-skills`のローカルリポジトリであっても，`for-pynthesis-skills`自身は修正対象ではなくこの条件には当てはまらない．**下記のプラグイン更新は行わない．
 
