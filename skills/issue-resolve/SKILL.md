@@ -274,7 +274,13 @@ git worktree list
 git worktree remove "<worktreeのパス>"
 ```
 
-`git worktree remove`は，worktreeに未コミットの変更や追跡外のファイルが残っていると失敗する．その場合は，以下の1行目で残っている内容をユーザーに提示し，承認を得てから2行目で削除する(残っている内容は失われる)．
+`git worktree list`でworktreeの行に`locked`と表示されている場合，`git worktree remove`はロックを理由に失敗する．`EnterWorktree`が作業中のworktreeにかけるロックであるため，以下で解除してから削除する．
+
+```
+git worktree unlock "<worktreeのパス>"
+```
+
+`git worktree remove`は，worktreeに未コミットの変更や追跡外のファイルが残っている場合も失敗する．その場合は，以下の1行目で残っている内容をユーザーに提示し，承認を得てから2行目で削除する(残っている内容は失われる)．
 
 ```
 git -C "<worktreeのパス>" status --short
