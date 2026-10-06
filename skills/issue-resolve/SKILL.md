@@ -267,7 +267,7 @@ gh api repos/tt-and-tk/<repo>/issues/<番号> --jq .state
 
 **`EnterWorktree`で作業した場合**(4.1)，`ExitWorktree`(`remove`)で作業ディレクトリとブランチをまとめて削除する(元のディレクトリに自動的に戻るため，`git checkout`は不要)．Vivadoプロジェクトを含むリポジトリでは，Git管理外の合成の中間生成物も一緒に消える(実機での確認はマージ前に済んでいるため支障はない)．
 
-`ExitWorktree`(`remove`)は，そのセッションが`EnterWorktree`で新しく作成したworktreeでない場合や，元のディレクトリでチェックアウトしているブランチに無いコミットが残っている場合には削除を行わない．worktreeが削除されなかった場合は，`ExitWorktree`(`keep`)で元のディレクトリへ戻り(既に戻っていれば何も起きない)，以下でworktreeのパスを確認する．出力のうち，作業ブランチ(`worktree-fix+issue-<番号>-<内容を表す短い語句>`)の行に表示されるパスがworktreeのパスである．
+`ExitWorktree`(`remove`)は，worktreeの作成元やコミットの状態によっては削除を行わない．worktreeが削除されなかった場合は，理由によらず，`ExitWorktree`(`keep`)で元のディレクトリへ戻り(既に戻っていれば何も起きない)，以下でworktreeのパスを確認する．出力のうち，作業ブランチ(`worktree-fix+issue-<番号>-<内容を表す短い語句>`)の行に表示されるパスがworktreeのパスである．
 
 ```
 git worktree list
