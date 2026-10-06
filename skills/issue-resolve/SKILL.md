@@ -285,7 +285,7 @@ git worktree unlock "<worktreeのパス>"
 git worktree remove "<worktreeのパス>"
 ```
 
-`git worktree remove`は，worktreeに未コミットの変更や追跡外のファイルが残っている場合も失敗する．その場合は，以下の1行目で残っている内容をユーザーに提示し，承認を得てから2行目で削除する(残っている内容は失われる)．
+worktreeに未コミットの変更や追跡外のファイルが残っていて`git worktree remove`が失敗した場合は，以下の1行目で残っている内容をユーザーに提示し，承認を得てから2行目で削除する(残っている内容は失われる)．
 
 ```
 git -C "<worktreeのパス>" status --short
