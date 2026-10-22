@@ -65,4 +65,4 @@ for-pynthesis-skillsプラグインが提供し，セッション開始時に読
 - **命名**: 名前は種類ごとに次の形にすること
     - 関数と変数: `snake_case`
     - `struct`・`enum`で定義する型と，`typedef`・`using`で付ける型の別名: `snake_case`の末尾に`_t`を付けた形
-    - 列挙子: 大文字の`SNAKE_CASE`
+    - 定数と列挙子: 大文字の`SNAKE_CASE`
