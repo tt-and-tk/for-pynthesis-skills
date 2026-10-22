@@ -60,3 +60,6 @@ for-pynthesis-skillsプラグインが提供し，セッション開始時に読
 ### Verilog/SystemVerilog
 - **処理の記述順**: alwaysブロックやassign文などの処理は，信号が入力から出力へ流れる順(CPUであれば命令が実行される順)に，ファイルの上から並べること
 - **begin/endで囲む**: alwaysブロック・if文・case文の各項目・for文など本体を持つ構文は，本体が1文だけでもbeginとendで囲むこと
+
+### C++
+- **命名**: 関数名・変数名は`snake_case`とし，構造体・列挙型の名前と`typedef`で付ける型名は末尾を`_t`にすること
