@@ -62,4 +62,7 @@ for-pynthesis-skillsプラグインが提供し，セッション開始時に読
 - **begin/endで囲む**: alwaysブロック・if文・case文の各項目・for文など本体を持つ構文は，本体が1文だけでもbeginとendで囲むこと
 
 ### C++
-- **命名**: 関数名・変数名は`snake_case`とし，構造体・列挙型の名前と`typedef`で付ける型名は末尾を`_t`にすること
+- **命名**: 名前は種類ごとに次の形にすること
+    - 関数と，定数でない変数: `snake_case`
+    - `struct`・`enum`で定義する型と，`typedef`・`using`で付ける型の別名: `snake_case`の末尾に`_t`を付ける
+    - 列挙子: 大文字の`SNAKE_CASE`
