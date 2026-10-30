@@ -1,6 +1,6 @@
 ---
 name: issue-resolve
-description: GitHub issueに対応する。1issue=1回の実行。「issue #Nに対応して」で起動。
+description: "GitHub issueに対応する．1issue=1回の実行．「issue #Nに対応して」で起動．"
 ---
 
 # 概要
