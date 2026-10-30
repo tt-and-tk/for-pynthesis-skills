@@ -1,6 +1,6 @@
 ---
 name: issue-create
-description: 課題や要望をGitHub issueとして起票する。「issue作って」「〜についてissue化して」で起動。
+description: "課題や要望をGitHub issueとして起票する．「issue作って」「〜についてissue化して」で起動．"
 ---
 
 課題や要望を，GitHub issueとして起票する．この時点ではソース調査は行わない (調査はissue対応時に行う)．
