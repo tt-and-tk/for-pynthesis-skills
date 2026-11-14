@@ -63,7 +63,7 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
 
 ## 変更するときの決まり
 
-### コーディング規約
+### コーディング規約の本文の置き場所
 
 コーディング規約の本文は`coding-conventions.md`だけが持つ．規約を変えるときは，このファイルだけを直す．
 
