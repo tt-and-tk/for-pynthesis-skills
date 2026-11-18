@@ -4,7 +4,7 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
 
 ## 導入手順
 
-1. 利用したいプロジェクトの`.claude/settings.json`に，マーケットプレイスとプラグインの有効化を記載する．
+1. 利用したいプロジェクトの`.claude/settings.json`に，マーケットプレイスとプラグインの有効化と，Claude Codeの自動メモリ機能の無効化を記載する．
 
    ```json
    {
@@ -18,9 +18,12 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
      },
      "enabledPlugins": {
        "for-pynthesis-skills@for-pynthesis-skills": true
-     }
+     },
+     "autoMemoryEnabled": false
    }
    ```
+
+   このプラグインのスキルとコーディング規約は，自動メモリ機能を使わないことを前提としている．プラグインからは自動メモリ機能の設定を入れられないため，プロジェクトごとに記載する．
 
 2. Claude Codeで`/plugin install for-pynthesis-skills@for-pynthesis-skills`を実行する．
 
