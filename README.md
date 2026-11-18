@@ -4,7 +4,7 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
 
 ## 導入手順
 
-1. 利用したいプロジェクトの`.claude/settings.json`に，マーケットプレイスとプラグインの有効化を記載する．
+1. 利用したいプロジェクトの`.claude/settings.json`に，マーケットプレイスとプラグインの有効化と，Claude Codeの自動メモリ機能の無効化を記載する．
 
    ```json
    {
@@ -18,9 +18,12 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
      },
      "enabledPlugins": {
        "for-pynthesis-skills@for-pynthesis-skills": true
-     }
+     },
+     "autoMemoryEnabled": false
    }
    ```
+
+   このプラグインのスキルとコーディング規約は，自動メモリ機能を使わないことを前提としている．プラグインからは自動メモリ機能の設定を入れられないため，プロジェクトごとに記載する．
 
 2. Claude Codeで`/plugin install for-pynthesis-skills@for-pynthesis-skills`を実行する．
 
@@ -29,16 +32,6 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
    - `user`: ユーザーホーム配下の`~/.claude/settings.json`に登録される．どのプロジェクトのリポジトリにも属さない設定のため，一度実行すれば，以降は別プロジェクト・別セッションでも再インストール不要．**複数プロジェクトで共有利用する本プラグインでは，このスコープでの導入を推奨する**
    - `project`: リポジトリ直下の`.claude/settings.json`に登録される．このファイルはリポジトリにコミットされる想定のため，クローンした他のメンバーにも共有される
    - `local`: リポジトリ直下の`.claude/settings.local.json`に登録される．このファイルは通常`.gitignore`で除外されリポジトリにコミットされないため，自分のローカル環境限定になる
-
-3. 利用したいプロジェクトの`.claude/settings.json`に，Claude Codeの自動メモリ機能を無効にする設定を記載する．
-
-   ```json
-   {
-     "autoMemoryEnabled": false
-   }
-   ```
-
-   自動メモリ機能は，Gitリポジトリごとに保存先が分かれ，ほかのリポジトリのセッションと共有されない．保存先はGit管理外のため，ユーザーからも内容が見えにくい．このプラグインのコーディング規約は，覚えておくべき決まりや事実をファイルに残すよう定めているため，この機能を使わない．プラグインからはこの設定を入れられないため，プロジェクトごとに記載する．
 
 ## 更新手順
 
