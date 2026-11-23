@@ -1,6 +1,6 @@
 # for-pynthesis-skills
 
-Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有する，GitHub issueの起票・対応を支援するClaude Codeスキル集と，共通のコーディング規約を提供するプラグイン．
+Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有する，GitHub issueの起票・対応を支援するClaude Codeスキル集と，共通のコーディング規約・方針の決め方を提供するプラグイン．
 
 ## 導入手順
 
@@ -23,7 +23,7 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
    }
    ```
 
-   このプラグインのスキルとコーディング規約は，自動メモリ機能を使わないことを前提としている．プラグインからは自動メモリ機能の設定を入れられないため，プロジェクトごとに記載する．
+   このプラグインのスキル・コーディング規約・方針の決め方は，自動メモリ機能を使わないことを前提としている．プラグインからは自動メモリ機能の設定を入れられないため，プロジェクトごとに記載する．
 
 2. Claude Codeで`/plugin install for-pynthesis-skills@for-pynthesis-skills`を実行する．
 
@@ -64,8 +64,12 @@ Pynthesisプロジェクト群 (specification/pynesis/pyntaxis/qurge) で共有�
 
 `coding-conventions.md`に，言語によらない項目と，言語ごとの書き方から成るコーディング規約を持つ．プラグインのSessionStartフック(`hooks/hooks.json`)が，再開(resume)を除くセッションの開始時などにその内容を出力し，文脈に読み込ませる(再開したセッションは，以前に読み込んだ規約を会話の履歴として引き継ぐため)．`claude -p`で起動したセッションにも読み込まれるため，`issue-resolve`のコーディング規約レビューのレビュアーもこの規約を参照する．
 
+### 方針の決め方
+
+`planning-guide.md`に，修正方針を決めるときに確かめる事柄を持つ．セッションの開始時には読み込まず，`issue-resolve`が修正方針を決める手順で読む．方針を決めない作業で文脈を使わないためである．
+
 ## 変更するときの決まり
 
-### コーディング規約の本文の置き場所
+### 本文の置き場所
 
-コーディング規約の本文は`coding-conventions.md`だけが持つ．規約を変えるときは，このファイルだけを直す．
+コーディング規約の本文は`coding-conventions.md`だけが，方針の決め方の本文は`planning-guide.md`だけが持つ．それぞれを変えるときは，そのファイルだけを直す．
