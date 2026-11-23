@@ -1,4 +1,4 @@
 .worktrees/
-review*.md
-draft*.md
-prompt*.md
+/review*.md
+/draft*.md
+/prompt*.md
