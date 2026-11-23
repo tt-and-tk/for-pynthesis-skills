@@ -4,7 +4,7 @@
 
 GitHubリポジトリ名: `tt-and-tk/for-pynthesis-skills`．
 
-Pynthesisの各リポジトリで共有する，GitHub issueの起票・対応を支援するClaude Codeのスキル集と，共通のコーディング規約・方針の決め方を，プラグインとして提供する．自身はハードウェア・OS・コンパイラ・アセンブラのソースを持たない．
+Pynthesisの各リポジトリで共有する，GitHub issueの起票・対応を支援するClaude Codeのスキル集と，共通の方針の決め方・コーディング規約を，プラグインとして提供する．自身はハードウェア・OS・コンパイラ・アセンブラのソースを持たない．
 
 ## Pynthesisの中での位置
 
@@ -16,7 +16,7 @@ Pynthesisの各リポジトリで共有する，GitHub issueの起票・対応�
 | `pyntaxis` | `assembler/` | 自作アセンブリ言語Pyntaxis(`.pt`) → SystemVerilog ROM(`.sv`)，または自作OS Qosmosの実行ファイルへのアセンブラ |
 | `pynesis` | `compiler/` | 自作プログラミング言語Pynesis(`.pn`) → アセンブリ言語Pyntaxisへのコンパイラ．`pyntaxis`のソースファイルを取り込んで使用し，`.sv`または実行ファイルまで一貫変換も可能 |
 | `qurge` | `mypc/` | CPU・メモリ・ROM等のハードウェア全体のVivadoプロジェクトと，ROM上で動く自作OS Qosmos(シェルやファイルシステムなど．Pynesisで記述) |
-| `for-pynthesis-skills`(このリポジトリ) | `for-pynthesis-skills/` | Pynthesisの各リポジトリで共有するissue起票・対応支援スキルと，コーディング規約・方針の決め方を提供する．特定のリポジトリが主担当と判断できない，全リポジトリに影響するissueの起票先でもある |
+| `for-pynthesis-skills`(このリポジトリ) | `for-pynthesis-skills/` | Pynthesisの各リポジトリで共有するissue起票・対応支援スキルと，方針の決め方・コーディング規約を提供する．特定のリポジトリが主担当と判断できない，全リポジトリに影響するissueの起票先でもある |
 
 ```
 入力(.pn) → [pynesisのコンパイラ] → アセンブリ(.pt) → [pyntaxisのアセンブラ] → SystemVerilog ROM(.sv) → [Vivado] → PYNQ-Z2上のハードウェア(qurge)
@@ -28,4 +28,4 @@ Pynthesisの各リポジトリで共有する，GitHub issueの起票・対応�
 
 | 文書 | 内容 |
 |:-|:-|
-| `README.md` | スキル・コーディング規約・方針の決め方の一覧・仕組みと，それらを変更するときの決まり |
+| `README.md` | スキル・方針の決め方・コーディング規約の一覧・仕組みと，それらを変更するときの決まり |
